@@ -37,8 +37,9 @@ app.set('views', path.join(__dirname, 'views'));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", (req, res, next) => {
-    res.send("Hello World");
-});
+// Routes
+const homeRoute = require('./routes/homeroute');
+
+app.use('/', homeRoute);
 
 module.exports = app;
