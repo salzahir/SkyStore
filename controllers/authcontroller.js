@@ -4,13 +4,10 @@ const db = require('../db/queries');
 // It checks the username and password against the database
 async function handleLogin(req, res) { 
     const {username, password} = req.body;
-
-    console.log("Login attempt with username:", username);
-    console.log("Login attempt with password:", password);
     const user = await db.getLoginUser(username, password);
+
     if (user) {
         req.session.user = user;
-        console.log("User found:", user);
         return res.render('index', {
             user: req.session.user || null,
             csrfToken: req.csrfToken()
@@ -21,6 +18,15 @@ async function handleLogin(req, res) {
     }
 }
 
+async function handleLogout(req, res) {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        console.log("User logged out");
+        res.redirect('/');
+    });
+}
+
 module.exports = {
-    handleLogin
+    handleLogin,
+    handleLogout
 };
