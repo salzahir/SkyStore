@@ -13,7 +13,6 @@ const session = require('express-session');
 const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
 
-
 app.use(cookieParser());
 app.use(session
     ({
