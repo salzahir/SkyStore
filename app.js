@@ -25,6 +25,8 @@ app.use(session
 app.use(csurf({ cookie: true }));
 
 const passport = require('passport');
+require('./db/passportconfig'); 
+
 // const flash = require('connect-flash');
 
 app.use(passport.initialize());
