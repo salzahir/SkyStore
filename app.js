@@ -41,7 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 const homeRoute = require('./routes/homeroute');
+const authRoutes = require('./routes/authroutes');
 
 app.use('/', homeRoute);
+app.use("/", authRoutes);
 
 module.exports = app;

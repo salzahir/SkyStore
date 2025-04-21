@@ -1,13 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
-
 const prisma = new PrismaClient();
+const { hashPassword} = require('../utils/hash');
 
 const sampleData = {
     data: {
         username: "sample",
         name: 'Sample User',
         email: 'sampleuser@example.com',
-        password: 'password',
+        password: '',
         folders: {
             create: {
                 name: 'SampleFolder',
@@ -24,6 +24,11 @@ const sampleData = {
 
 async function createSample() {
     try {
+
+        const samplePass = 'password';
+        const hashedPass = await hashPassword(samplePass);
+        sampleData.data.password = hashedPass;
+
         console.log("Seeding database...");
         await prisma.user.create(sampleData);
         const allUsers = await prisma.user.findMany();

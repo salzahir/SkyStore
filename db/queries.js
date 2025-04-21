@@ -1,7 +1,6 @@
 const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const { hashPassword, comparePassword } = require('../utils/hash');  // Corrected the import path
 
 async function getLoginUser(username, password) {
     const user = await prisma.user.findUnique({
@@ -10,7 +9,7 @@ async function getLoginUser(username, password) {
         }
     });
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && await comparePassword(password, user.password)) {
         return user;
     } else {
         return null;
@@ -18,15 +17,13 @@ async function getLoginUser(username, password) {
 }
 
 async function postRegisterUser(username, name, email, password) {
-
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+    const hashedPwd = await hashPassword(password);
     const user = await prisma.user.create({
         data: {
             name: name,
             username: username,
             email: email,
-            password: hashedPassword
+            password: hashedPwd,
         }
     })
     return user;

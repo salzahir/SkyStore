@@ -6,6 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <%- include('login') %>
+    <div class="container">
+        <% if (user) { %>
+            <h2>Welcome, <%= user.username %>!</h2>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <%- include('login') %>
+        <% } %>
+    </div>
 </body>
 </html>

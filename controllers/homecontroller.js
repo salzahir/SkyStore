@@ -1,5 +1,9 @@
 function renderIndex(req, res) {
-    res.render('index');
+    // Check if the user is logged in
+    res.render('index', {
+        user: req.session.user || null,
+        csrfToken: req.csrfToken()
+      });    
 }
 
 module.exports = {
