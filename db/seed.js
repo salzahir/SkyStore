@@ -2,42 +2,50 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-
-async function main() {
-
-    await prisma.user.create(
-        {
-            data: {
-                username: "salzahir",
-                name: 'Salman',
-                email: 'salzahir18@gmail.com',
-                password: 'prisma25',
-                folders : {
+const sampleData = {
+    data: {
+        username: "sample",
+        name: 'Sample User',
+        email: 'sampleuser@example.com',
+        password: 'password',
+        folders: {
+            create: {
+                name: 'SampleFolder',
+                files: {
                     create: {
-                        name: 'CSCI1933',
-                        files: {
-                            create: {
-                                name: 'HW2',
-                                fileType: 'pdf',
-                            }
-                        }
+                        name: 'SampleFile',
+                        fileType: 'pdf',
                     }
                 }
-            },
+            }
         }
-    )
-    const allUsers = await prisma.user.findMany()
-    console.log(allUsers);
+    },
 }
 
-
-(async () => {
+async function createSample() {
     try {
-        await main();
+        console.log("Seeding database...");
+        await prisma.user.create(sampleData);
+        const allUsers = await prisma.user.findMany();
+        console.log(allUsers);
+        console.log("Database seeded successfully!");
     } catch (error) {
-        console.error('Error in main function:', error);
-        process.exit(1);
+        console.error("Error seeding database:", error);
+        throw error;
+    } 
+}
+
+async function seedDataBase() {
+    try {
+        await prisma.$connect();
+        await createSample();
+    } catch (error) {
+        console.error('Error in seedDataBase:', error);
+        throw error;
     } finally {
         await prisma.$disconnect();
+        console.log("Disconnected from the database.");
     }
-})();
+}
+
+seedDataBase();
