@@ -26,7 +26,27 @@ async function handleLogout(req, res) {
     });
 }
 
+function renderRegister(req, res) {
+    res.render('register', {
+        csrfToken: req.csrfToken()
+    });
+}
+
+async function handleRegister(req, res) {
+    const {username, name, email, password} = req.body;
+    try {
+        const user = await db.postRegisterUser(username, name, email, password)
+        console.log("User sucessfully registered:", user);
+        res.redirect('/');
+    } catch (error) {
+        console.error("Error registering user:", error);
+        res.status(500).send('Error registering user');
+    }
+}
+
 module.exports = {
     handleLogin,
-    handleLogout
+    handleLogout,
+    renderRegister,
+    handleRegister
 };
