@@ -2,10 +2,23 @@
 <link rel="stylesheet" href="index.css">
 
 <div class="container">
+
+    <% if (errors && errors.length > 0) { %>
+        <ul class="error-messages">
+            <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+
     <h2>Register here</h2>
     <form action="/register" method="POST">
         <div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <label for="name">First Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
         </div>

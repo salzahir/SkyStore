@@ -1,4 +1,5 @@
 const db = require('../db/queries');
+const { validationResult } = require('express-validator');
 
 // This function handles the login process
 // It checks the username and password against the database
@@ -18,6 +19,7 @@ async function handleLogin(req, res) {
     }
 }
 
+// This function handles the logout process
 async function handleLogout(req, res) {
     req.logout(function(err) {
         if (err) { return next(err); }
@@ -28,11 +30,23 @@ async function handleLogout(req, res) {
 
 function renderRegister(req, res) {
     res.render('register', {
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {}
     });
 }
 
 async function handleRegister(req, res) {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render('register', {
+            csrfToken: req.csrfToken(),
+            errors: errors.array(),
+            old: req.body 
+        });
+    }
+    
     const {username, name, email, password} = req.body;
     try {
         const user = await db.postRegisterUser(username, name, email, password)
