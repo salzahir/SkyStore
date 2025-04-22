@@ -58,9 +58,18 @@ async function handleRegister(req, res) {
     }
 }
 
+function renderTerms(req, res) {
+    res.render('terms', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {}
+    });
+}
+
 module.exports = {
     handleLogin,
     handleLogout,
     renderRegister,
-    handleRegister
+    handleRegister,
+    renderTerms
 };
