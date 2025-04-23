@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const session = require('express-session');
-const csurf = require('csurf');
+const csrfMiddleware = require('./utils/csrf');
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
@@ -23,17 +23,7 @@ app.use(session
     })
 );
 
-// CSRF protection not working for file uploads temp solution
-
-// app.use(csurf({ cookie: true }));
-app.use((req, res, next) => {
-    // Provide a dummy csrfToken function
-    req.csrfToken = function() { return 'dummy-csrf-token'; };
-    // Make the token available to views
-    res.locals.csrfToken = 'dummy-csrf-token';
-    next();
-  });
-
+app.use(csrfMiddleware);
 const passport = require('passport');
 require('./db/passportconfig'); 
 
