@@ -49,13 +49,16 @@ async function handleLogin(req, res) {
 
     if (user) {
         req.session.user = user;
-        return res.render('index', {
-            user: req.session.user || null,
-            csrfToken: req.csrfToken()
-        });
+        res.redirect('/dashboard');
+        console.log("User logged in:", user);
     }
     else {
-        res.status(401).send('Invalid username or password');
+        console.log("Invalid username or password");
+        res.status(401).render('login', {
+            csrfToken: req.csrfToken(),
+            errors: [{msg: "Invalid username or password"}],
+            old: req.body
+        });
     }
 }
 

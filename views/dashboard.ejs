@@ -1,10 +1,10 @@
 <!-- dashboard.ejs -->
 
-<% include('header') %>
+<link rel="stylesheet" href="index.css">
+<%- include('partials/header') %>
 
 <div class="dashboard-container">
     <h2 class="welcome-text">Welcome, <%= user.username %>!</h2>
-
     <div class="dashboard-actions">
         <a href="/upload" class="upload-link">Upload File</a>
         <a href="/logout" class="logout-link">Logout</a>
@@ -12,14 +12,7 @@
 
     <div class="uploaded-files">
         <h3>Your Uploaded Files</h3>
-        <!-- You can loop through uploaded files here if you have that logic -->
-        <!-- Example: -->
-        <!-- 
-            <% uploadedFiles.forEach(file => { %>
-                <p><%= file.name %></p>
-            <% }) %>
-        -->
+
     </div>
 </div>
 
-<!-- <% include('footer') %> -->
