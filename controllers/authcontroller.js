@@ -1,6 +1,46 @@
 const db = require('../db/queries');
 const { validationResult } = require('express-validator');
 
+// for "/" route
+function renderRoot(req, res) {
+    if(!req.session.user) {
+        return res.render('login', {
+            csrfToken: req.csrfToken()
+        });
+    }
+    return res.render('dashboard', {
+        user: req.session.user,
+        csrfToken: req.csrfToken()
+    });
+}
+
+// for "/login" route
+// This function renders the login page
+function renderLogin(req, res) {
+    return res.render('login', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {}
+    });
+}
+
+// This function checks if the user is authenticated
+// middle ware for routes that require authentication
+function ensureAuth(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    next();
+}
+
+// This function renders the dashboard page
+function renderDashboard(req, res) {
+    return res.render('dashboard', {
+        user: req.session.user,
+        csrfToken: req.csrfToken()
+    });
+}
+
 // This function handles the login process
 // It checks the username and password against the database
 async function handleLogin(req, res) { 
@@ -67,6 +107,10 @@ function renderTerms(req, res) {
 }
 
 module.exports = {
+    renderRoot,
+    renderLogin,
+    ensureAuth,
+    renderDashboard,
     handleLogin,
     handleLogout,
     renderRegister,

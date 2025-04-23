@@ -50,11 +50,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-const homeRoute = require('./routes/homeroute');
 const authRoutes = require('./routes/authroutes');
 const uploadRoutes = require('./routes/uploadroutes');
 
-app.use('/', homeRoute);
 app.use("/", authRoutes);
 app.use("/", uploadRoutes);
 
