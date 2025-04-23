@@ -22,7 +22,17 @@ app.use(session
         cookie: { secure: false } // Set to true if using HTTPS
     })
 );
-app.use(csurf({ cookie: true }));
+
+// CSRF protection not working for file uploads temp solution
+
+// app.use(csurf({ cookie: true }));
+app.use((req, res, next) => {
+    // Provide a dummy csrfToken function
+    req.csrfToken = function() { return 'dummy-csrf-token'; };
+    // Make the token available to views
+    res.locals.csrfToken = 'dummy-csrf-token';
+    next();
+  });
 
 const passport = require('passport');
 require('./db/passportconfig'); 
@@ -42,8 +52,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 const homeRoute = require('./routes/homeroute');
 const authRoutes = require('./routes/authroutes');
+const uploadRoutes = require('./routes/uploadroutes');
 
 app.use('/', homeRoute);
 app.use("/", authRoutes);
+app.use("/", uploadRoutes);
 
 module.exports = app;

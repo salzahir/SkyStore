@@ -14,6 +14,7 @@
 
         <% if (user) { %>
             <h2 class="welcome-text">Welcome, <%= user.username %>!</h2>
+            <a href="/upload" class="upload-link">Upload File</a>
             <a href="/logout" class="logout-link">Logout</a>
         <% } else { %>
             <%- include('login') %>
