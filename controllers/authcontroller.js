@@ -1,6 +1,15 @@
 const db = require('../db/queries');
 const { validationResult } = require('express-validator');
 
+// This function checks if the user is authenticated
+// middle ware for routes that require authentication
+function ensureAuth(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    next();
+}
+
 // This function handles the login process
 // It checks the username and password against the database
 async function handleLogin(req, res) { 
@@ -9,13 +18,16 @@ async function handleLogin(req, res) {
 
     if (user) {
         req.session.user = user;
-        return res.render('index', {
-            user: req.session.user || null,
-            csrfToken: req.csrfToken()
-        });
+        res.redirect('/dashboard');
+        console.log("User logged in:", user);
     }
     else {
-        res.status(401).send('Invalid username or password');
+        console.log("Invalid username or password");
+        res.status(401).render('login', {
+            csrfToken: req.csrfToken(),
+            errors: [{msg: "Invalid username or password"}],
+            old: req.body
+        });
     }
 }
 
@@ -28,16 +40,7 @@ async function handleLogout(req, res) {
     });
 }
 
-function renderRegister(req, res) {
-    res.render('register', {
-        csrfToken: req.csrfToken(),
-        errors: [],
-        old: {}
-    });
-}
-
 async function handleRegister(req, res) {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).render('register', {
@@ -58,18 +61,9 @@ async function handleRegister(req, res) {
     }
 }
 
-function renderTerms(req, res) {
-    res.render('terms', {
-        csrfToken: req.csrfToken(),
-        errors: [],
-        old: {}
-    });
-}
-
 module.exports = {
+    ensureAuth,
     handleLogin,
     handleLogout,
-    renderRegister,
     handleRegister,
-    renderTerms
 };
