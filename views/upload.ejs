@@ -1,6 +1,5 @@
 <h1>Upload Your File</h1>
 <form action="/upload" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <label for="file">Choose a file to upload:</label>
     <input type="file" name="file" id="file" required><br><br>
     <button type="submit">Upload</button>
