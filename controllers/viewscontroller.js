@@ -7,16 +7,10 @@
 
 // for "/" route
 function renderRoot(req, res) {
-    if(!req.session.user) {
-        return res.render('login', {
-            csrfToken: req.csrfToken(),
-            errors: [],
-            old: {}
-        });
-    }
-    return res.render('dashboard', {
-        user: req.session.user,
-        csrfToken: req.csrfToken()
+    return res.render('index', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {}
     });
 }
 

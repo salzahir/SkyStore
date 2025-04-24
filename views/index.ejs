@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyStore | File Storage</title>
+  <link rel="stylesheet" href="/home.css"> 
+</head>
+<body>
+
+<%- include('partials/header') %> 
+
+  <main class="main-content">
+    <div class="hero-section">
+      <div class="intro">
+        <h1>SkyStore</h1>
+        <p class="subtitle">Secure cloud storage for all your files</p>
+        <p>Store, access, and share your files from anywhere. With military-grade encryption and 99.9% uptime, your data is always safe and available when you need it.</p>
+        <div class="cta-buttons">
+          <a href="/signup" class="get-started-btn">Get started for free</a>
+          <a href="/demo" class="demo-btn">See how it works</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/images/cloud-storage.svg" alt="Cloud storage illustration">
+      </div>
+    </div>
+
+    <section class="features">
+      <h2>Why Choose SkyStore?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="/icons/shield.svg" alt="Security icon">
+          </div>
+          <h3>Secure Your Files</h3>
+          <p>Your files are encrypted and protected with strong security measures.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="/icons/devices.svg" alt="Devices icon">
+          </div>
+          <h3>Access Anywhere</h3>
+          <p>Available on all your devices - desktop, mobile, and tablet. Your files sync automatically across devices.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="/icons/collaborate.svg" alt="Collaboration icon">
+          </div>
+          <h3>Easy Sharing</h3>
+          <p>Share files with colleagues or friends with customizable permissions and expiration dates.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+<%- include('partials/footer') %> 
+</body>
+</html>
