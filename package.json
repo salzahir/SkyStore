@@ -23,6 +23,7 @@
   "homepage": "https://github.com/salzahir/SkyStore#readme",
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "@supabase/supabase-js": "^2.49.4",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",

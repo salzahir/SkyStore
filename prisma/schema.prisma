@@ -19,6 +19,7 @@ model File {
   updatedAt DateTime @updatedAt
   name String @db.VarChar(255)
   fileType String @db.VarChar(255)
+  url       String?   @db.VarChar(512)
   folderId Int
   folder Folder @relation(fields: [folderId], references: [id])
 }
