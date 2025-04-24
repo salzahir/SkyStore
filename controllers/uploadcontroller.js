@@ -1,3 +1,6 @@
+import supabase from '../db/supabase.js';
+import {insertFile} from '../db/queries.js';
+
 // Controller functions
 function renderUpload(req, res) {
     res.render('upload', {
@@ -5,16 +8,51 @@ function renderUpload(req, res) {
     });
 }
 
-function postUpload(req, res) {
-    const file = req.file;
-    if (!file) {
-        return res.status(400).send('No file uploaded.');
-    }
-    console.log('File uploaded:', file);
-    res.send('File uploaded successfully.');
+async function postUpload(req, res) {
+  const file = req.file;
+  
+  // Validation
+  if (!file || !file.buffer) {
+    return res.status(400).send('No file or invalid file buffer');
+  }
+
+  if (!supabase.storage) {
+    return res.status(500).send('Supabase storage not initialized');
+  }
+
+  try {
+    const { error } = await supabase.storage
+      .from('files')
+      .upload(`public/${Date.now()}_${file.originalname}`, file.buffer, {
+        contentType: file.mimetype,
+        upsert: false
+      });
+
+    if (error) throw error;
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('files')
+      .getPublicUrl(`public/${file.originalname}`);
+
+    res.json({ 
+      success: true, 
+      url: publicUrl 
+    });
+
+    await insertFile({
+      name: file.originalname,
+      fileType: file.mimetype,
+      url: publicUrl,
+      folderId: 1 
+    });
+    
+    console.log('File uploaded successfully:', file.originalname);
+    console.log('File URL:', publicUrl);
+
+  } catch (error) {
+    console.error('FINAL UPLOAD ERROR:', error);
+    res.status(500).send(`Upload failed: ${error.message}`);
+  }
 }
 
-module.exports = {
-    renderUpload,
-    postUpload
-};
+export { postUpload, renderUpload };
