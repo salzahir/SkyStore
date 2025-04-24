@@ -12,7 +12,19 @@
 
     <div class="uploaded-files">
         <h3>Your Uploaded Files</h3>
-
+        <h2>Your Files</h2>
+        <ul>
+            <% files.forEach(file => { %>
+                <li>
+                    <h3><%= file.name %> (<%= file.fileType %>)</h3>
+                    <% if (file.url) { %>
+                        <a href="<%= file.url %>" target="_blank">View File</a>
+                    <% } else { %>
+                        <span>No URL available</span>
+                    <% } %>
+                </li>
+            <% }) %>
+        </ul>
     </div>
 </div>
 

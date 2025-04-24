@@ -41,8 +41,31 @@ async function insertFile({ name, fileType, url, folderId }) {
     return file;
 }
 
+async function getFiles() {
+    try {
+        console.log("Fetching all files...");
+        const files = await prisma.file.findMany();
+        console.log(`${files.length} files found`);
+        return files;
+    } catch (error) {
+        console.error("Error fetching files:", error);
+    }
+}
+
+async function deleteAllFiles() {
+    try {
+        console.log("Deleting all files...");
+        const files = await prisma.file.deleteMany();
+        console.log(`${files.count} files deleted`);
+        return files;
+    } catch (error) {
+        console.error("Error deleting files:", error);
+    }
+}
+
 module.exports = {
     getLoginUser,
     postRegisterUser,
-    insertFile
+    insertFile,
+    getFiles
 };

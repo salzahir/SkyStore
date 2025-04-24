@@ -20,10 +20,12 @@ async function postUpload(req, res) {
     return res.status(500).send('Supabase storage not initialized');
   }
 
+  const newFileName = `${Date.now()}_${file.originalname}`;
+
   try {
     const { error } = await supabase.storage
       .from('files')
-      .upload(`public/${Date.now()}_${file.originalname}`, file.buffer, {
+      .upload(`public/${newFileName}`, file.buffer, {
         contentType: file.mimetype,
         upsert: false
       });
@@ -32,7 +34,7 @@ async function postUpload(req, res) {
 
     const { data: { publicUrl } } = supabase.storage
       .from('files')
-      .getPublicUrl(`public/${file.originalname}`);
+      .getPublicUrl(`public/${newFileName}`);
 
     res.json({ 
       success: true, 

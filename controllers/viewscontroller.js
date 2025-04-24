@@ -3,6 +3,9 @@
 // View controller for rendering views
 // This module handles rendering views for the application.
 
+
+const db = require('../db/queries.js');
+
 // General Pages
 
 // for "/" route
@@ -39,12 +42,20 @@ function renderRegister(req, res) {
     });
 }
 
-// User Pages
-function renderDashboard(req, res) {
-    return res.render('dashboard', {
-        user: req.session.user,
-        csrfToken: req.csrfToken()
-    });
+async function renderDashboard(req, res) {
+    try {
+        const files = await db.getFiles();
+        console.log("Files fetched successfully:", files);
+
+        return res.render('dashboard', {
+            user: req.session.user,
+            files: files,
+            csrfToken: req.csrfToken()
+        });
+    } catch (err) {
+        console.error("Error fetching files:", err);
+        return res.status(500).send('Failed to load dashboard');
+    }
 }
 
 module.exports = {
