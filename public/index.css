@@ -115,3 +115,31 @@ button[type="submit"]:hover {
     transition: background-color 0.2s;
     font-weight: 500;
 }
+
+.upload-image-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+  }
+  
+  .upload-image {
+    width: 100px;
+    height: auto;
+    transition: transform 0.2s;
+  }
+  
+  .upload-label-text {
+    font-weight: 500;
+    margin-top: 0.5rem;
+    color: #555;
+  }
+  
+  .upload-image-label:hover .upload-image {
+    transform: scale(1.05);
+  }
+  
+  .upload-input-hidden {
+    display: none;
+  }
