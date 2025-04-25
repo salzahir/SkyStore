@@ -16,43 +16,7 @@
     color: var(--text);
     line-height: 1.6;
   }
-  
-  header {
-    background-color: var(--primary);
-    color: var(--white);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .logo {
-    height: 40px;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .nav-links a {
-    color: var(--white);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  
-  .nav-links a:hover {
-    color: #66b3ff;
-  }
-  
+    
   /* Hero Section */
   .hero-section {
     display: flex;

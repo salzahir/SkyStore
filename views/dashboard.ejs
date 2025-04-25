@@ -1,30 +1,59 @@
 <!-- dashboard.ejs -->
+<link rel="stylesheet" href="/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
-<link rel="stylesheet" href="index.css">
 <%- include('partials/header') %>
 
-<div class="dashboard-container">
+<div class="container">
+  <div class="dashboard-container">
     <h2 class="welcome-text">Welcome, <%= user.username %>!</h2>
     <div class="dashboard-actions">
-         <%- include('partials/upload') -%>
-        <a href="/logout" class="logout-link">Logout</a>
+      <button class="btn" id="showUploadBtn">
+        <i class="fas fa-upload"></i> Upload New File
+      </button>
+      <a href="/logout" class="logout-link">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
     </div>
-
-    <div class="uploaded-files">
-        <h3>Your Uploaded Files</h3>
-        <h2>Your Files</h2>
-        <ul>
-            <% files.forEach(file => { %>
-                <li>
-                    <h3><%= file.name %> (<%= file.fileType %>)</h3>
-                    <% if (file.url) { %>
-                        <a href="<%= file.url %>" target="_blank">View File</a>
-                    <% } else { %>
-                        <span>No URL available</span>
-                    <% } %>
-                </li>
-            <% }) %>
-        </ul>
-    </div>
+  </div>
+  
+  <div class="upload-section" id="uploadSection" style="display: none;">
+    <%- include('partials/upload') -%>
+  </div>
+  
+  <div class="uploaded-files">
+    <h3>Your Files</h3>
+    
+    <% if (files.length === 0) { %>
+      <div class="empty-state">
+        <i class="fas fa-folder-open fa-3x"></i>
+        <p>You haven't uploaded any files yet. Use the upload button to get started!</p>
+      </div>
+    <% } else { %>
+      <div class="files-grid">
+        <% files.forEach(file => { %>
+          <div class="file-card">
+            <div class="file-header">
+              <h4><%= file.name %></h4>
+              <span class="file-type"><%= file.fileType %></span>
+            </div>
+            <div class="file-body">
+              <div class="file-actions">
+                <% if (file.url) { %>
+                  <a href="<%= file.url %>" target="_blank" class="btn">
+                    <i class="fas fa-eye"></i> View
+                  </a>
+                <% } else { %>
+                  <span>No URL available</span>
+                <% } %>
+                <button class="btn btn-outline delete-file" data-id="<%= file._id %>">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
 </div>
-
