@@ -57,3 +57,14 @@
     <% } %>
   </div>
 </div>
+
+<script>
+    document.getElementById('showUploadBtn').addEventListener('click', function() {
+      const uploadSection = document.getElementById('uploadSection');
+      if (uploadSection.style.display === 'none') {
+        uploadSection.style.display = 'block'; 
+      } else {
+        uploadSection.style.display = 'none'; 
+      }
+    });
+  </script>

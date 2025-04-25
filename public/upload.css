@@ -1,0 +1,28 @@
+.upload-image-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: var(--primary-light);
+    padding: 1rem 2rem;
+    border-radius: var(--radius);
+    color: var(--white);
+    font-size: 1.2rem;
+    transition: background-color 0.2s;
+    text-align: center;
+  }
+  
+  .upload-image {
+    max-width: 100px;  /* Set max width to control image size */
+    max-height: 100px; /* Set max height to control image size */
+    object-fit: contain; /* Ensures the image scales without distortion */
+    margin-right: 10px; /* Optional: space between the image and the text */
+  }
+  
+  .upload-image-label:hover {
+    background-color: var(--primary);
+  }
+
+  .upload-image-input {
+    display: none; /* Hide the default file input */
+  }
