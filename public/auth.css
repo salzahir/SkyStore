@@ -1,0 +1,163 @@
+/* login.css */
+:root {
+    --primary: #003366;
+    --primary-light: #004c99;
+    --secondary: #f8f9fa;
+    --text: #333333;
+    --text-light: #555555;
+    --white: #ffffff;
+    --border: #dddddd;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --radius: 6px;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  
+  /* Login page specific styling */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Adjust based on your header height */
+    padding: 2rem;
+  }
+  
+  .login-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+  
+  .welcome-title {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .accent-line {
+    height: 4px;
+    background-color: var(--primary);
+    width: 60px;
+    margin: 0 auto 25px;
+    border-radius: 2px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .btn-primary {
+    width: 100%;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .form-links {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .form-links a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .form-links a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+  }
+  
+  .error-messages {
+    background-color: #fff0f0;
+    border-left: 4px solid #ff3333;
+    color: #cc0000;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    list-style-type: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  
+  .error-messages li {
+    margin: 5px 0;
+  }
+  
+  /* For smaller screens */
+  @media (max-width: 500px) {
+    .login-card {
+      border-radius: 8px;
+      padding: 20px;
+    }
+  }
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkbox-group a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.checkbox-group a:hover {
+  text-decoration: underline;
+}
