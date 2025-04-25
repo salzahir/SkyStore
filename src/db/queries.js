@@ -1,6 +1,6 @@
-const {PrismaClient} = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { hashPassword, comparePassword } = require('../utils/hash');  // Corrected the import path
+const { hashPassword, comparePassword } = require('../utils/hash'); 
 
 async function getLoginUser(username, password) {
     const user = await prisma.user.findUnique({

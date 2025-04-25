@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const session = require('express-session');
-const csrfMiddleware = require('./utils/csrf');
+const csrfMiddleware = require('./src/utils/csrf');
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
@@ -25,8 +25,7 @@ app.use(session
 
 app.use(csrfMiddleware);
 const passport = require('passport');
-require('./db/passportconfig'); 
-
+require('./src/db/passportconfig')
 // const flash = require('connect-flash');
 
 app.use(passport.initialize());
@@ -34,14 +33,13 @@ app.use(passport.session());
 
 // Views
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
+app.set('views', path.join(__dirname, 'src', 'views'));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-const authRoutes = require('./routes/authroutes');
-const uploadRoutes = require('./routes/uploadroutes');
+const authRoutes = require('./src/routes/authroutes');
+const uploadRoutes = require('./src/routes/uploadroutes');
 
 app.use("/", authRoutes);
 app.use("/", uploadRoutes);
