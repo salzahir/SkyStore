@@ -14,33 +14,36 @@ datasource db {
 }
 
 model File {
-  id Int @id @default(autoincrement())
+  id        String   @id @default(uuid())  // Changed to UUID
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name String @db.VarChar(255)
-  fileType String @db.VarChar(255)
-  url       String?   @db.VarChar(512)
-  folderId Int
-  folder Folder @relation(fields: [folderId], references: [id])
+  name      String   @db.VarChar(255)
+  fileType  String   @db.VarChar(255)
+  url       String?  @db.VarChar(512)
+  folderId  String?  // Changed to String (UUID)
+  userID    String   // Changed to String (UUID)
+  folder    Folder?   @relation(fields: [folderId], references: [id])
+  user      User     @relation(fields: [userID], references: [id])
 }
 
 model Folder {
-  id Int @id @default(autoincrement())
+  id        String   @id @default(uuid())  // Changed to UUID
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name String @db.VarChar(255)
-  files File[]
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  name      String   @db.VarChar(255)
+  files     File[]
+  userId    String   // Changed to String (UUID)
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-    id      Int      @id @default(autoincrement())
-    username String @unique
-    email String @unique
-    name String?
-    password String 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    folders Folder[]
+  id        String   @id @default(uuid())  // Changed to UUID
+  username  String   @unique
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  folders   Folder[]
+  files     File[]
 }

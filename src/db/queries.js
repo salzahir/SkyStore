@@ -29,13 +29,14 @@ async function postRegisterUser(username, name, email, password) {
     return user;
 }
 
-async function insertFile({ name, fileType, url, folderId }) {
+async function insertFile({ name, fileType, url, folderId, userID }) {
     const file = await prisma.file.create({
         data: {
             name,
             fileType,
             url,
-            folderId
+            folderId: folderId ?? null,
+            userID
         }
     });
     return file;

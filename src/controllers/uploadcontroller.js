@@ -41,11 +41,15 @@ async function postUpload(req, res) {
       url: publicUrl 
     });
 
+    const userId = req.session.user.id;
+    console.log("User ID:", userId);
+
     await insertFile({
       name: file.originalname,
       fileType: file.mimetype,
       url: publicUrl,
-      folderId: 1 
+      folderId: null, 
+      userID: userId 
     });
     
     console.log('File uploaded successfully:', file.originalname);
