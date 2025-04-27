@@ -1,13 +1,14 @@
 # SkyStore
 
-SkyStore is an online store application built with Node.js, Express, Prisma, and Passport.js for user authentication.
+SkyStore is a full-stack file storage application built with Node.js, Express, Prisma, and Passport.js, offering secure authentication, cloud storage integration, and a responsive user experience.
 
-## Features
-
-- User registration and login
-- Secure password hashing with bcrypt
-- Authentication using Passport.js
-- Data persistence with Prisma and SQLite (or your database of choice)
+Features
+	•	Secure user registration, login, and session persistence with Passport.js
+	•	Password hashing using bcrypt for enhanced security
+	•	File and folder CRUD operations with a hierarchical structure
+	•	Cloud storage integration via Supabase for scalable file management
+	•	Responsive, modern UI optimized for desktop and mobile devices
+	•	Database management and querying using Prisma ORM
 
 ## Setup
 
@@ -29,11 +30,13 @@ npm run setup
 Scripts
 	•	npm run setup: Installs dependencies and seeds the database.
 	•	npm start: Starts the server.
-	•	npm run seed: Seeds the database.
+	•	npm run seed: Seeds the database manually.
 
 Tech Stack
-	•	Node.js: JavaScript runtime for server-side development.
-	•	Express.js: Web framework for Node.js.
-	•	Prisma: ORM for database management.
-	•	Passport.js: Authentication middleware.
-	•	bcrypt: Library for password hashing.
+	•	Node.js — JavaScript runtime for server-side development
+	•	Express.js — Web framework for handling routes and middleware
+	•	Prisma — ORM for database management and queries
+	•	Passport.js — Authentication middleware for secure login
+	•	bcrypt — Password hashing for user data protection
+	•	Multer — Middleware for handling file uploads
+	•	Supabase — Cloud storage service for scalable file management
