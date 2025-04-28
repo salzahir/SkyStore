@@ -1,10 +1,10 @@
 // authroutes.js
 
-const {Router} = require("express")
+const { Router } = require("express")
 const router = Router()
 const authController = require("../controllers/authcontroller")
 const viewsController = require("../controllers/viewscontroller")
-const {validForm} = require("../utils/validation")
+const { validForm } = require("../utils/validation")
 
 // Root & General
 router.get("/", viewsController.renderRoot);

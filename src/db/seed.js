@@ -1,26 +1,30 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const { hashPassword} = require('../utils/hash');
+const { v4: uuidv4 } = require('uuid'); // UUID library
+const { hashPassword } = require('../utils/hash'); // ES module import
 
-const sampleData = {
+const prisma = new PrismaClient();
+const userId = uuidv4(); 
+
+// First create the user
+const user = await prisma.user.create({
     data: {
         username: "sample",
         name: 'Sample User',
         email: 'sampleuser@example.com',
-        password: '',
-        folders: {
+        password: "",
+        userId: userId
+    }, create: {
+        files: {
             create: {
-                name: 'SampleFolder',
-                files: {
-                    create: {
-                        name: 'SampleFile',
-                        fileType: 'pdf',
-                    }
-                }
+                id: uuidv4(),
+                name: 'SampleFile',
+                fileType: 'pdf',
+                url: 'https://example.com/samplefile.pdf',
+                userID: userId
             }
         }
-    },
-}
+    }
+});
 
 async function createSample() {
     try {

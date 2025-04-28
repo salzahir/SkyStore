@@ -1,5 +1,6 @@
 import supabase from '../db/supabase.js';
 import {insertFile} from '../db/queries.js';
+import { getUserFiles } from '../db/queries.js';
 
 // Controller functions
 function renderUpload(req, res) {
@@ -36,20 +37,28 @@ async function postUpload(req, res) {
       .from('files')
       .getPublicUrl(`public/${newFileName}`);
 
-    res.json({ 
-      success: true, 
-      url: publicUrl 
-    });
 
+
+    const userId = req.session.user.id;
     await insertFile({
       name: file.originalname,
       fileType: file.mimetype,
       url: publicUrl,
-      folderId: 1 
+      folderId: null, 
+      userID: userId 
     });
     
-    console.log('File uploaded successfully:', file.originalname);
-    console.log('File URL:', publicUrl);
+    console.log('File uploaded successfully:', publicUrl);
+
+    const files = await getUserFiles(userId);
+
+    res.render('dashboard', {
+      user: req.session.user,
+      message: 'File uploaded successfully',
+      files: files,
+      errors: [],
+      old: {},
+    });
 
   } catch (error) {
     console.error('FINAL UPLOAD ERROR:', error);

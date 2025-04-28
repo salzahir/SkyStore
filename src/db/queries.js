@@ -1,6 +1,6 @@
-const {PrismaClient} = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { hashPassword, comparePassword } = require('../utils/hash');  // Corrected the import path
+const { hashPassword, comparePassword } = require('../utils/hash'); 
 
 async function getLoginUser(username, password) {
     const user = await prisma.user.findUnique({
@@ -29,13 +29,14 @@ async function postRegisterUser(username, name, email, password) {
     return user;
 }
 
-async function insertFile({ name, fileType, url, folderId }) {
+async function insertFile({ name, fileType, url, folderId, userID }) {
     const file = await prisma.file.create({
         data: {
             name,
             fileType,
             url,
-            folderId
+            folderId: folderId ?? null,
+            userID
         }
     });
     return file;
@@ -49,6 +50,21 @@ async function getFiles() {
         return files;
     } catch (error) {
         console.error("Error fetching files:", error);
+    }
+}
+
+async function getUserFiles(userId) {
+    try {
+        console.log(`Fetching files for user ID: ${userId}`);
+        const files = await prisma.file.findMany({
+            where: {
+                userID: userId
+            }
+        });
+        console.log(`${files.length} files found for user ID: ${userId}`);
+        return files;
+    } catch (error) {
+        console.error("Error fetching user files:", error);
     }
 }
 
@@ -67,5 +83,6 @@ module.exports = {
     getLoginUser,
     postRegisterUser,
     insertFile,
-    getFiles
+    getFiles, 
+    getUserFiles,
 };
