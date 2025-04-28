@@ -23,6 +23,13 @@
   
   <div class="uploaded-files">
     <h3>Your Files</h3>
+
+    message
+    <% if (message) { %>
+      <div class="alert alert-success">
+        <%= message %>
+      </div>
+    <% } %>
     
     <% if (files.length === 0) { %>
       <div class="empty-state">

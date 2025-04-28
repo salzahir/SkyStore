@@ -53,6 +53,21 @@ async function getFiles() {
     }
 }
 
+async function getUserFiles(userId) {
+    try {
+        console.log(`Fetching files for user ID: ${userId}`);
+        const files = await prisma.file.findMany({
+            where: {
+                userID: userId
+            }
+        });
+        console.log(`${files.length} files found for user ID: ${userId}`);
+        return files;
+    } catch (error) {
+        console.error("Error fetching user files:", error);
+    }
+}
+
 async function deleteAllFiles() {
     try {
         console.log("Deleting all files...");
@@ -68,5 +83,6 @@ module.exports = {
     getLoginUser,
     postRegisterUser,
     insertFile,
-    getFiles
+    getFiles, 
+    getUserFiles,
 };
