@@ -4,7 +4,9 @@
 // This module handles rendering views for the application.
 
 
-const db = require('../db/queries.js');
+// const db = require('../db/queries.js');
+
+import * as db from '../db/queries.js';
 
 // General Pages
 
@@ -60,7 +62,15 @@ async function renderDashboard(req, res) {
     }
 }
 
-module.exports = {
+// module.exports = {
+//     renderRoot,
+//     renderLogin,
+//     renderDashboard,
+//     renderRegister,
+//     renderTerms
+// };
+
+export {
     renderRoot,
     renderLogin,
     renderDashboard,

@@ -1,5 +1,8 @@
-const db = require('../db/queries');
-const { validationResult } = require('express-validator');
+// const db = require('../db/queries');
+// const { validationResult } = require('express-validator');
+
+import * as db from '../db/queries.js';
+import { validationResult } from 'express-validator';
 
 // This function checks if the user is authenticated
 // middle ware for routes that require authentication
@@ -61,9 +64,16 @@ async function handleRegister(req, res) {
     }
 }
 
-module.exports = {
+// module.exports = {
+//     ensureAuth,
+//     handleLogin,
+//     handleLogout,
+//     handleRegister,
+// };
+
+export {
     ensureAuth,
     handleLogin,
     handleLogout,
     handleRegister,
-};
+}

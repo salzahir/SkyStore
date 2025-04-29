@@ -1,6 +1,10 @@
-const LocalStrategy = require('passport-local').Strategy;
-const passport = require('passport');
-const getLoginUser = require('./queries').getLoginUser;
+// const LocalStrategy = require('passport-local').Strategy;
+// const passport = require('passport');
+// const getLoginUser = require('./queries').getLoginUser;
+
+import LocalStrategy from 'passport-local';
+import passport from 'passport';
+import { getLoginUser } from './queries.js';
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
@@ -30,4 +34,4 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-module.exports = passport;
+export default passport;

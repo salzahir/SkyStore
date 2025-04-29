@@ -1,4 +1,5 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
+
 const validForm = [
     body('username')
         .notEmpty().withMessage('Username is required'),
@@ -24,4 +25,4 @@ const validForm = [
         .equals('on').withMessage('You must accept the terms and conditions')
 ];
 
-module.exports = { validForm };
+export default validForm;

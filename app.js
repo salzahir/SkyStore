@@ -1,17 +1,27 @@
 // app.js
-const express = require('express');
-const path = require('path');
-const app = express();
+
+import express from 'express';
+import path from 'path';
+import dotenv from 'dotenv';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import { fileURLToPath } from 'url';
+import csrfMiddleware from './src/utils/csrf.js';
+import authRoutes from './src/routes/authroutes.js';
+import uploadRoutes from './src/routes/uploadroutes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Config 
-require('dotenv').config();
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const session = require('express-session');
-const csrfMiddleware = require('./src/utils/csrf');
-const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 app.use(session
@@ -24,9 +34,7 @@ app.use(session
 );
 
 app.use(csrfMiddleware);
-const passport = require('passport');
-require('./src/db/passportconfig')
-// const flash = require('connect-flash');
+import './src/db/passportconfig.js';
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -34,14 +42,11 @@ app.use(passport.session());
 // Views
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
+
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Routes
-const authRoutes = require('./src/routes/authroutes');
-const uploadRoutes = require('./src/routes/uploadroutes');
 
 app.use("/", authRoutes);
 app.use("/", uploadRoutes);
 
-module.exports = app;
+export { app, PORT}

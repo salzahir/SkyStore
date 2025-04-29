@@ -1,6 +1,10 @@
-const { PrismaClient } = require('@prisma/client');
+
+// const { PrismaClient } = require('@prisma/client');
+// const { hashPassword, comparePassword } = require('../utils/hash'); 
+
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-const { hashPassword, comparePassword } = require('../utils/hash'); 
+import { hashPassword, comparePassword } from '../utils/hash.js';
 
 async function getLoginUser(username, password) {
     const user = await prisma.user.findUnique({
@@ -79,10 +83,11 @@ async function deleteAllFiles() {
     }
 }
 
-module.exports = {
+export {
     getLoginUser,
     postRegisterUser,
     insertFile,
-    getFiles, 
+    getFiles,
     getUserFiles,
-};
+    deleteAllFiles
+}
