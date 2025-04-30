@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-const { v4: uuidv4 } = require('uuid'); // UUID library
-const { hashPassword } = require('../utils/hash'); // ES module import
+import { PrismaClient } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid'; 
+import { hashPassword } from '../utils/hash';
 
 const prisma = new PrismaClient();
 const userId = uuidv4(); 

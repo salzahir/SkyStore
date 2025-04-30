@@ -14,7 +14,7 @@ Features
 
 To set up the project locally:
 
-1. Clone the repository:
+1. Clone the repository: 
    ```bash
    git clone <repo_url>
    cd SkyStore
@@ -22,10 +22,20 @@ To set up the project locally:
 2.  Run
 npm run setup
 
-3.	Create a .env file and add the necessary environment variables (e.g., database URL).
+3. Create a .env file and add the necessary environment variables (e.g., database URL, Supabase credentials).
 
 4.	Start the server:
     npm start
+
+Docker Setup
+
+To run the project with Docker:
+	1.	Build the Docker image:
+
+	docker build -t skystore .
+
+	2.	Run the Docker container:
+	docker run -p 3000:3000 skystore
 
 Scripts
 	•	npm run setup: Installs dependencies and seeds the database.

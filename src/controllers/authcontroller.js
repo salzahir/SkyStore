@@ -1,5 +1,5 @@
-const db = require('../db/queries');
-const { validationResult } = require('express-validator');
+import * as db from '../db/queries/user.js';
+import handleValidationErrors from '../utils/error.js';
 
 // This function checks if the user is authenticated
 // middle ware for routes that require authentication
@@ -12,8 +12,8 @@ function ensureAuth(req, res, next) {
 
 // This function handles the login process
 // It checks the username and password against the database
-async function handleLogin(req, res) { 
-    const {username, password} = req.body;
+async function handleLogin(req, res) {
+    const { username, password } = req.body;
     const user = await db.getLoginUser(username, password);
 
     if (user) {
@@ -25,7 +25,7 @@ async function handleLogin(req, res) {
         console.log("Invalid username or password");
         res.status(401).render('login', {
             csrfToken: req.csrfToken(),
-            errors: [{msg: "Invalid username or password"}],
+            errors: [{ msg: "Invalid username or password" }],
             old: req.body
         });
     }
@@ -33,7 +33,7 @@ async function handleLogin(req, res) {
 
 // This function handles the logout process
 async function handleLogout(req, res) {
-    req.logout(function(err) {
+    req.logout(function (err) {
         if (err) { return next(err); }
         console.log("User logged out");
         res.redirect('/');
@@ -41,16 +41,12 @@ async function handleLogout(req, res) {
 }
 
 async function handleRegister(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('register', {
-            csrfToken: req.csrfToken(),
-            errors: errors.array(),
-            old: req.body 
-        });
+    const validationError = handleValidationErrors(req, res, 'register');
+    if (validationError) {
+        return validationError;
     }
-    
-    const {username, name, email, password} = req.body;
+
+    const { username, name, email, password } = req.body;
     try {
         const user = await db.postRegisterUser(username, name, email, password)
         console.log("User sucessfully registered:", user);
@@ -61,9 +57,22 @@ async function handleRegister(req, res) {
     }
 }
 
-module.exports = {
+async function handleDeleteFile(req, res) {
+    const fileId = req.body.fileId;
+    try {
+        await db.deleteFile(fileId);
+        console.log("File deleted successfully");
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error("Error deleting file:", error);
+        res.status(500).send('Error deleting file');
+    }
+}
+
+export {
     ensureAuth,
     handleLogin,
     handleLogout,
     handleRegister,
-};
+    handleDeleteFile
+}

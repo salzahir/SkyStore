@@ -1,9 +1,10 @@
-const { Router } = require("express")
+import { Router } from "express"
+import upload from "../utils/multer.js"
+import * as uploadController from "../controllers/uploadcontroller.js"
+
 const router = Router()
-const upload = require("../utils/multer")
-const uploadController = require("../controllers/uploadcontroller")
 
 router.get("/upload", uploadController.renderUpload);
 router.post("/upload", upload.single('file'), uploadController.postUpload);
 
-module.exports = router
+export default router;

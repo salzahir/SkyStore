@@ -1,33 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const { hashPassword, comparePassword } = require('../utils/hash'); 
-
-async function getLoginUser(username, password) {
-    const user = await prisma.user.findUnique({
-        where: {
-            username: username,
-        }
-    });
-
-    if (user && await comparePassword(password, user.password)) {
-        return user;
-    } else {
-        return null;
-    }
-}
-
-async function postRegisterUser(username, name, email, password) {
-    const hashedPwd = await hashPassword(password);
-    const user = await prisma.user.create({
-        data: {
-            name: name,
-            username: username,
-            email: email,
-            password: hashedPwd,
-        }
-    })
-    return user;
-}
+import prisma from "./prisma.js";
 
 async function insertFile({ name, fileType, url, folderId, userID }) {
     const file = await prisma.file.create({
@@ -68,6 +39,25 @@ async function getUserFiles(userId) {
     }
 }
 
+async function getFileById(fileId) {
+    try {
+        console.log(`Fetching file with ID: ${fileId}`);
+        const file = await prisma.file.findUnique({
+            where: {
+                id: fileId
+            }
+        });
+        if (!file) {
+            console.log(`File with ID: ${fileId} not found`);
+            return null;
+        }
+        console.log(`File with ID: ${fileId} found`);
+        return file;
+    } catch (error) {
+        console.error("Error fetching file:", error);
+    }
+}
+
 async function deleteAllFiles() {
     try {
         console.log("Deleting all files...");
@@ -79,10 +69,26 @@ async function deleteAllFiles() {
     }
 }
 
-module.exports = {
-    getLoginUser,
-    postRegisterUser,
+async function deleteFile(fileId) {
+    try {
+        console.log(`Deleting file with ID: ${fileId}`);
+        const file = await prisma.file.delete({
+            where: {
+                id: fileId
+            }
+        });
+        console.log(`File with ID: ${fileId} deleted`);
+        return file;
+    } catch (error) {
+        console.error("Error deleting file:", error);
+    }
+}
+
+export {
     insertFile,
-    getFiles, 
+    getFiles,
     getUserFiles,
-};
+    deleteAllFiles,
+    deleteFile,
+    getFileById,
+}

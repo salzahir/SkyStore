@@ -1,6 +1,6 @@
-const LocalStrategy = require('passport-local').Strategy;
-const passport = require('passport');
-const getLoginUser = require('./queries').getLoginUser;
+import LocalStrategy from 'passport-local';
+import passport from 'passport';
+import { getLoginUser } from './queries/user.js';
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
@@ -12,7 +12,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         }
     } catch (err) {
         return done(err);
-    } 
+    }
 }))
 
 passport.serializeUser((user, done) => {
@@ -30,4 +30,4 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-module.exports = passport;
+export default passport;

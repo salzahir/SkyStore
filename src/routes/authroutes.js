@@ -1,10 +1,11 @@
 // authroutes.js
 
-const { Router } = require("express")
+import { Router } from "express";
+import * as authController from "../controllers/authcontroller.js"
+import * as viewsController from "../controllers/viewscontroller.js"
+import validForm from "../utils/validation.js"
+
 const router = Router()
-const authController = require("../controllers/authcontroller")
-const viewsController = require("../controllers/viewscontroller")
-const { validForm } = require("../utils/validation")
 
 // Root & General
 router.get("/", viewsController.renderRoot);
@@ -21,4 +22,7 @@ router.post("/register", validForm, authController.handleRegister);
 // Protected User Pages
 router.get("/dashboard", authController.ensureAuth, viewsController.renderDashboard);
 
-module.exports = router
+router.get("/dashboard/file/:id", authController.ensureAuth, viewsController.renderFile);
+router.post("/dashboard/file/:id", authController.ensureAuth, authController.handleDeleteFile);
+
+export default router;

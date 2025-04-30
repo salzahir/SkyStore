@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Details</title>
+    <link rel="stylesheet" href="/files.css">
+</head>
+<body>
+    <div class="file-container">
+        <div class="file-header">
+            <h1 class="file-title"><%= file.name %></h1>
+            <div class="file-type"><%= file.fileType %></div>
+            <div class="file-meta">
+                <div><strong>File ID:</strong> <%= file.id %></div>
+                <div><strong>Created:</strong> <%= new Date(file.createdAt).toLocaleString() %></div>
+                <div><strong>Last Updated:</strong> <%= new Date(file.updatedAt).toLocaleString() %></div>
+            </div>
+        </div>
+        
+        <a href="<%= file.url %>" class="download-button" download>Click here to download the file</a>
+        <form action="/dashboard/file/:id" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="fileId" value="<%= file.id %>">
+            <button type="submit" class="btn btn-outline delete-file">
+              <i class="fas fa-trash"></i> Delete File
+            </button>
+          </form>
+
+    </div>
+</body>
+</html>

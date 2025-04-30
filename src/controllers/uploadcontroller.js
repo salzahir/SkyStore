@@ -1,17 +1,17 @@
 import supabase from '../db/supabase.js';
-import {insertFile} from '../db/queries.js';
-import { getUserFiles } from '../db/queries.js';
+import { insertFile } from '../db/queries/file.js';
+import { getUserFiles } from '../db/queries/file.js';
 
 // Controller functions
 function renderUpload(req, res) {
-    res.render('upload', {
-        csrfToken: req.csrfToken()
-    });
+  res.render('upload', {
+    csrfToken: req.csrfToken()
+  });
 }
 
 async function postUpload(req, res) {
   const file = req.file;
-  
+
   // Validation
   if (!file || !file.buffer) {
     return res.status(400).send('No file or invalid file buffer');
@@ -44,10 +44,10 @@ async function postUpload(req, res) {
       name: file.originalname,
       fileType: file.mimetype,
       url: publicUrl,
-      folderId: null, 
-      userID: userId 
+      folderId: null,
+      userID: userId
     });
-    
+
     console.log('File uploaded successfully:', publicUrl);
 
     const files = await getUserFiles(userId);

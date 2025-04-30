@@ -3,8 +3,7 @@
 // View controller for rendering views
 // This module handles rendering views for the application.
 
-
-const db = require('../db/queries.js');
+import * as db from '../db/queries/file.js';
 
 // General Pages
 
@@ -45,8 +44,6 @@ function renderRegister(req, res) {
 async function renderDashboard(req, res) {
     try {
         const files = await db.getFiles();
-        console.log("Files fetched successfully:", files);
-
         return res.render('dashboard', {
             user: req.session.user,
             files: files,
@@ -60,10 +57,27 @@ async function renderDashboard(req, res) {
     }
 }
 
-module.exports = {
+async function renderFile(req, res) {
+    const fileID = req.params.id;
+    const file = await db.getFileById(fileID);
+
+    if (!file) {
+        return res.status(404).send('File not found');
+    }
+    return res.render('file', {
+        user: req.session.user,
+        csrfToken: req.csrfToken(),
+        file: file,
+        errors: [],
+        old: {}
+    });
+}
+
+export {
     renderRoot,
     renderLogin,
     renderDashboard,
     renderRegister,
-    renderTerms
+    renderTerms,
+    renderFile
 };
