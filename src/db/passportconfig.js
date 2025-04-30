@@ -1,6 +1,6 @@
 import LocalStrategy from 'passport-local';
 import passport from 'passport';
-import { getLoginUser } from './queries.js';
+import { getLoginUser } from './queries/user.js';
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
@@ -12,7 +12,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         }
     } catch (err) {
         return done(err);
-    } 
+    }
 }))
 
 passport.serializeUser((user, done) => {

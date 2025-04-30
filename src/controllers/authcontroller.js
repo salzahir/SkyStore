@@ -1,4 +1,4 @@
-import * as db from '../db/queries.js';
+import * as db from '../db/queries/user.js';
 import handleValidationErrors from '../utils/error.js';
 
 // This function checks if the user is authenticated
@@ -12,8 +12,8 @@ function ensureAuth(req, res, next) {
 
 // This function handles the login process
 // It checks the username and password against the database
-async function handleLogin(req, res) { 
-    const {username, password} = req.body;
+async function handleLogin(req, res) {
+    const { username, password } = req.body;
     const user = await db.getLoginUser(username, password);
 
     if (user) {
@@ -25,7 +25,7 @@ async function handleLogin(req, res) {
         console.log("Invalid username or password");
         res.status(401).render('login', {
             csrfToken: req.csrfToken(),
-            errors: [{msg: "Invalid username or password"}],
+            errors: [{ msg: "Invalid username or password" }],
             old: req.body
         });
     }
@@ -33,7 +33,7 @@ async function handleLogin(req, res) {
 
 // This function handles the logout process
 async function handleLogout(req, res) {
-    req.logout(function(err) {
+    req.logout(function (err) {
         if (err) { return next(err); }
         console.log("User logged out");
         res.redirect('/');
@@ -45,8 +45,8 @@ async function handleRegister(req, res) {
     if (validationError) {
         return validationError;
     }
-    
-    const {username, name, email, password} = req.body;
+
+    const { username, name, email, password } = req.body;
     try {
         const user = await db.postRegisterUser(username, name, email, password)
         console.log("User sucessfully registered:", user);

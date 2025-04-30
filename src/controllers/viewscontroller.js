@@ -3,7 +3,7 @@
 // View controller for rendering views
 // This module handles rendering views for the application.
 
-import * as db from '../db/queries.js';
+import * as db from '../db/queries/file.js';
 
 // General Pages
 
