@@ -1,6 +1,3 @@
-// const db = require('../db/queries');
-// const { validationResult } = require('express-validator');
-
 import * as db from '../db/queries.js';
 import { validationResult } from 'express-validator';
 
@@ -63,13 +60,6 @@ async function handleRegister(req, res) {
         res.status(500).send('Error registering user');
     }
 }
-
-// module.exports = {
-//     ensureAuth,
-//     handleLogin,
-//     handleLogout,
-//     handleRegister,
-// };
 
 export {
     ensureAuth,

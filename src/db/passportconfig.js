@@ -1,7 +1,3 @@
-// const LocalStrategy = require('passport-local').Strategy;
-// const passport = require('passport');
-// const getLoginUser = require('./queries').getLoginUser;
-
 import LocalStrategy from 'passport-local';
 import passport from 'passport';
 import { getLoginUser } from './queries.js';

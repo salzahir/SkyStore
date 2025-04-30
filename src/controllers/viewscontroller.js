@@ -3,9 +3,6 @@
 // View controller for rendering views
 // This module handles rendering views for the application.
 
-
-// const db = require('../db/queries.js');
-
 import * as db from '../db/queries.js';
 
 // General Pages
@@ -61,14 +58,6 @@ async function renderDashboard(req, res) {
         return res.status(500).send('Failed to load dashboard');
     }
 }
-
-// module.exports = {
-//     renderRoot,
-//     renderLogin,
-//     renderDashboard,
-//     renderRegister,
-//     renderTerms
-// };
 
 export {
     renderRoot,
