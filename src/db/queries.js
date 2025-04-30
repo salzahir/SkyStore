@@ -68,6 +68,25 @@ async function getUserFiles(userId) {
     }
 }
 
+async function getFileById(fileId) {
+    try {
+        console.log(`Fetching file with ID: ${fileId}`);
+        const file = await prisma.file.findUnique({
+            where: {
+                id: fileId
+            }
+        });
+        if (!file) {
+            console.log(`File with ID: ${fileId} not found`);
+            return null;
+        }
+        console.log(`File with ID: ${fileId} found`);
+        return file;
+    } catch (error) {
+        console.error("Error fetching file:", error);
+    }
+}
+
 async function deleteAllFiles() {
     try {
         console.log("Deleting all files...");
@@ -79,11 +98,28 @@ async function deleteAllFiles() {
     }
 }
 
+async function deleteFile(fileId) {
+    try {
+        console.log(`Deleting file with ID: ${fileId}`);
+        const file = await prisma.file.delete({
+            where: {
+                id: fileId
+            }
+        });
+        console.log(`File with ID: ${fileId} deleted`);
+        return file;
+    } catch (error) {
+        console.error("Error deleting file:", error);
+    }
+}
+
 export {
     getLoginUser,
     postRegisterUser,
     insertFile,
     getFiles,
     getUserFiles,
-    deleteAllFiles
+    deleteAllFiles,
+    deleteFile,
+    getFileById,
 }

@@ -45,16 +45,10 @@
             </div>
             <div class="file-body">
               <div class="file-actions">
-                <% if (file.url) { %>
-                  <a href="<%= file.url %>" target="_blank" class="btn">
-                    <i class="fas fa-eye"></i> View
-                  </a>
-                <% } else { %>
-                  <span>No URL available</span>
-                <% } %>
-                <button class="btn btn-outline delete-file" data-id="<%= file._id %>">
-                  <i class="fas fa-trash"></i>
-                </button>
+
+                <a href="/dashboard/file/<%= encodeURIComponent(file.id) %>" class="btn">
+                  <i class="fas fa-info-circle"></i> Details
+                </a>
               </div>
             </div>
           </div>

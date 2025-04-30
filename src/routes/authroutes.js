@@ -22,4 +22,7 @@ router.post("/register", validForm, authController.handleRegister);
 // Protected User Pages
 router.get("/dashboard", authController.ensureAuth, viewsController.renderDashboard);
 
+router.get("/dashboard/file/:id", authController.ensureAuth, viewsController.renderFile);
+router.post("/dashboard/file/:id", authController.ensureAuth, authController.handleDeleteFile);
+
 export default router;

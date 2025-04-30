@@ -57,9 +57,22 @@ async function handleRegister(req, res) {
     }
 }
 
+async function handleDeleteFile(req, res) {
+    const fileId = req.body.fileId;
+    try {
+        await db.deleteFile(fileId);
+        console.log("File deleted successfully");
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error("Error deleting file:", error);
+        res.status(500).send('Error deleting file');
+    }
+}
+
 export {
     ensureAuth,
     handleLogin,
     handleLogout,
     handleRegister,
+    handleDeleteFile
 }

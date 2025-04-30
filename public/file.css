@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+.file-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.file-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.file-title {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+.file-meta {
+    color: #666;
+    font-size: 14px;
+}
+.file-meta div {
+    margin-bottom: 5px;
+}
+.file-type {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.download-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.download-button:hover {
+    background-color: #45a049;
+}
