@@ -1,5 +1,5 @@
 import * as db from '../db/queries.js';
-import { validationResult } from 'express-validator';
+import handleValidationErrors from '../utils/error.js';
 
 // This function checks if the user is authenticated
 // middle ware for routes that require authentication
@@ -41,13 +41,9 @@ async function handleLogout(req, res) {
 }
 
 async function handleRegister(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('register', {
-            csrfToken: req.csrfToken(),
-            errors: errors.array(),
-            old: req.body 
-        });
+    const validationError = handleValidationErrors(req, res, 'register');
+    if (validationError) {
+        return validationError;
     }
     
     const {username, name, email, password} = req.body;
