@@ -1,34 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from "./queries/prisma.js";
 import { v4 as uuidv4 } from 'uuid'; 
-import { hashPassword } from '../utils/hash';
+import { hashPassword } from '../utils/hash.js';
 
-const prisma = new PrismaClient();
-const userId = uuidv4(); 
-
-// First create the user
-const user = await prisma.user.create({
+const sampleData = {
     data: {
         username: "sample",
         name: 'Sample User',
         email: 'sampleuser@example.com',
         password: "",
-        userId: userId
-    }, create: {
-        files: {
-            create: {
-                id: uuidv4(),
-                name: 'SampleFile',
-                fileType: 'pdf',
-                url: 'https://example.com/samplefile.pdf',
-                userID: userId
-            }
-        }
-    }
-});
+        id: uuidv4()
+    }, 
+};
 
 async function createSample() {
     try {
-
         const samplePass = 'password';
         const hashedPass = await hashPassword(samplePass);
         sampleData.data.password = hashedPass;
