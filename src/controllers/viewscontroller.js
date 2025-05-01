@@ -43,9 +43,10 @@ function renderRegister(req, res) {
 
 async function renderDashboard(req, res) {
     try {
-        const files = await db.getFiles();
+        const user = req.session.user;
+        const files = await db.getUserFiles(user.id);
         return res.render('dashboard', {
-            user: req.session.user,
+            user: user,
             files: files,
             errors: [],
             old: {},
