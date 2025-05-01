@@ -1,8 +1,9 @@
-import * as db from '../db/queries/user.js';
+import * as userDb from '../db/queries/user.js';
+import * as fileDb from '../db/queries/file.js';
 import handleValidationErrors from '../utils/error.js';
 
 // This function checks if the user is authenticated
-// middle ware for routes that require authentication
+// Middleware for routes that require authentication
 function ensureAuth(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/login");
@@ -14,7 +15,7 @@ function ensureAuth(req, res, next) {
 // It checks the username and password against the database
 async function handleLogin(req, res) {
     const { username, password } = req.body;
-    const user = await db.getLoginUser(username, password);
+    const user = await userDb.getLoginUser(username, password); 
 
     if (user) {
         req.session.user = user;
@@ -48,8 +49,8 @@ async function handleRegister(req, res) {
 
     const { username, name, email, password } = req.body;
     try {
-        const user = await db.postRegisterUser(username, name, email, password)
-        console.log("User sucessfully registered:", user);
+        const user = await userDb.postRegisterUser(username, name, email, password);
+        console.log("User successfully registered:", user);
         res.redirect('/');
     } catch (error) {
         console.error("Error registering user:", error);
@@ -60,7 +61,7 @@ async function handleRegister(req, res) {
 async function handleDeleteFile(req, res) {
     const fileId = req.body.fileId;
     try {
-        await db.deleteFile(fileId);
+        await fileDb.deleteFile(fileId);
         console.log("File deleted successfully");
         res.redirect('/dashboard');
     } catch (error) {
