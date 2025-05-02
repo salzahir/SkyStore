@@ -11,6 +11,9 @@ const router = Router()
 router.get("/", viewsController.renderRoot);
 router.get("/terms", viewsController.renderTerms);
 
+router.get("/forgot-password", viewsController.renderForgotPassword);
+router.post("/forgot-password", authController.handleRecoverPassword);
+
 // Auth Pages
 router.get("/login", viewsController.renderLogin);
 router.post("/login", authController.handleLogin);

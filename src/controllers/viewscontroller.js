@@ -74,11 +74,21 @@ async function renderFile(req, res) {
     });
 }
 
+function renderForgotPassword(req, res) {
+    return res.render('forgot', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {},
+        message: null
+    });
+}
+
 export {
     renderRoot,
     renderLogin,
     renderDashboard,
     renderRegister,
     renderTerms,
-    renderFile
+    renderFile,
+    renderForgotPassword
 };

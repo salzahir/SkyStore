@@ -33,6 +33,6 @@ async function sendEmail(recipent) {
   }
 }
 
-sendEmail("salzahir18@gmail.com");
+// sendEmail("salzahir18@gmail.com");
 
 export default sendEmail;
