@@ -95,9 +95,10 @@ async function handleRecoverPassword(req, res) {
                 old: req.body,
                 message: null
             });
+            console.log("Done rendering");
         }
     } catch (error) {
-        console.error("Error recovering password:", error);
+        console.error("Error recovering password:", error,message);
         res.status(500).send('Error recovering password');
     }
 }

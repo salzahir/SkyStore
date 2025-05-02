@@ -10,7 +10,7 @@
 
     <% if (errors.length > 0) { %>
         <% errors.forEach(function(error) { %>
-          <p style="color: red;"><%= error %></p>
+          <p style="color: red;"><%= error.msg %></p>
         <% }) %>
       <% } %>
 
