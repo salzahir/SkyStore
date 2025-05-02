@@ -1,6 +1,7 @@
 import * as userDb from '../db/queries/user.js';
 import * as fileDb from '../db/queries/file.js';
 import handleValidationErrors from '../utils/error.js';
+import resend from "../services/resend.js";
 
 // This function checks if the user is authenticated
 // Middleware for routes that require authentication
@@ -70,10 +71,43 @@ async function handleDeleteFile(req, res) {
     }
 }
 
+async function handleRecoverPassword(req, res) {
+    const { email } = req.body;
+    try {
+        const user = await userDb.getUserByEmail(email);
+        if (user) {
+            await resend(email);
+            console.log("Recovery email sent to:", email);
+            res.render("forgot"
+                , {
+                    csrfToken: req.csrfToken(),
+                    errors: [],
+                    old: {},
+                    message: "Recovery email sent. Please check your inbox."
+                }
+            )
+        } else {
+            console.log("Email not found");
+            res.status(404).render(
+                'forgot', {
+                csrfToken: req.csrfToken(),
+                errors: [{ msg: "Email not found" }],
+                old: req.body,
+                message: null
+            });
+            console.log("Done rendering");
+        }
+    } catch (error) {
+        console.error("Error recovering password:", error,message);
+        res.status(500).send('Error recovering password');
+    }
+}
+
 export {
     ensureAuth,
     handleLogin,
     handleLogout,
     handleRegister,
-    handleDeleteFile
+    handleDeleteFile,
+    handleRecoverPassword
 }

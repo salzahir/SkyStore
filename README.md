@@ -2,6 +2,8 @@
 
 SkyStore is a full-stack file storage application built with Node.js, Express, Prisma, and Passport.js, offering secure authentication, cloud storage integration, and a responsive user experience.
 
+<img src="public/assets/logo.png" alt="Sky Store Logo" width="300" height="auto" />
+
 Features
 	•	Secure user registration, login, and session persistence with Passport.js
 	•	Password hashing using bcrypt for enhanced security
