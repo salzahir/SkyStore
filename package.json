@@ -41,6 +41,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "prisma": "^6.6.0",
+    "resend": "^4.4.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
