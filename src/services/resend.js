@@ -1,11 +1,4 @@
 import { Resend } from 'resend';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 if (!process.env.RESEND_API_KEY) {
   throw new Error('RESEND_API_KEY is not defined in environment variables');
@@ -32,7 +25,5 @@ async function sendEmail(recipent) {
     console.error('Error sending email:', error);
   }
 }
-
-// sendEmail("salzahir18@gmail.com");
 
 export default sendEmail;
