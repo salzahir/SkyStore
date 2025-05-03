@@ -2,6 +2,7 @@ import * as userDb from '../db/queries/user.js';
 import * as fileDb from '../db/queries/file.js';
 import handleValidationErrors from '../utils/error.js';
 import resend from "../services/resend.js";
+import { devLog } from '../utils/devlog.js';
 
 // This function checks if the user is authenticated
 // Middleware for routes that require authentication
@@ -21,10 +22,10 @@ async function handleLogin(req, res) {
     if (user) {
         req.session.user = user;
         res.redirect('/dashboard');
-        console.log("User logged in:", user);
+        devLog("User logged in:", user);
     }
     else {
-        console.log("Invalid username or password");
+        devLog("Invalid login attempt:", username);
         res.status(401).render('login', {
             csrfToken: req.csrfToken(),
             errors: [{ msg: "Invalid username or password" }],
@@ -37,7 +38,7 @@ async function handleLogin(req, res) {
 async function handleLogout(req, res) {
     req.logout(function (err) {
         if (err) { return next(err); }
-        console.log("User logged out");
+        devLog("User logged out");
         res.redirect('/');
     });
 }
@@ -51,7 +52,7 @@ async function handleRegister(req, res) {
     const { username, name, email, password } = req.body;
     try {
         const user = await userDb.postRegisterUser(username, name, email, password);
-        console.log("User successfully registered:", user);
+        devLog("User registered:", user);
         res.redirect('/');
     } catch (error) {
         console.error("Error registering user:", error);
@@ -63,7 +64,7 @@ async function handleDeleteFile(req, res) {
     const fileId = req.body.fileId;
     try {
         await fileDb.deleteFile(fileId);
-        console.log("File deleted successfully");
+        devLog("File deleted:", fileId);
         res.redirect('/dashboard');
     } catch (error) {
         console.error("Error deleting file:", error);
@@ -77,7 +78,7 @@ async function handleRecoverPassword(req, res) {
         const user = await userDb.getUserByEmail(email);
         if (user) {
             await resend(email);
-            console.log("Recovery email sent to:", email);
+            devLog("Recovery email sent to:", email);
             res.render("forgot"
                 , {
                     csrfToken: req.csrfToken(),
@@ -87,7 +88,7 @@ async function handleRecoverPassword(req, res) {
                 }
             )
         } else {
-            console.log("Email not found");
+            devLog("Email not found:", email);
             res.status(404).render(
                 'forgot', {
                 csrfToken: req.csrfToken(),
@@ -95,7 +96,6 @@ async function handleRecoverPassword(req, res) {
                 old: req.body,
                 message: null
             });
-            console.log("Done rendering");
         }
     } catch (error) {
         console.error("Error recovering password:", error,message);

@@ -1,6 +1,7 @@
 import supabase from '../db/supabase.js';
 import { insertFile } from '../db/queries/file.js';
-import { getUserFiles } from '../db/queries/file.js';
+import { getUserFiles } from '../db/queries/file.js'
+import { devLog } from '../utils/devlog.js';
 
 // Controller functions
 function renderUpload(req, res) {
@@ -48,7 +49,7 @@ async function postUpload(req, res) {
       userID: userId
     });
 
-    console.log('File uploaded successfully:', publicUrl);
+    devLog('File uploaded successfully:', publicUrl);
 
     const files = await getUserFiles(userId);
 
