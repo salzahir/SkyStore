@@ -66,4 +66,18 @@ async function getUserByEmail(email) {
     }
 }
 
-export { getLoginUser, postRegisterUser, getUserByEmail };
+async function resetPassword(email, newPassword) {
+    try {
+        hashedPwd = await hashPassword(newPassword);
+        const user = await prisma.user.update({
+            where: { email },
+            data: { password: hashedPwd }
+        });
+        return user;
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        throw new Error("Error resetting password");
+    }
+}
+
+export { getLoginUser, postRegisterUser, getUserByEmail, resetPassword };
