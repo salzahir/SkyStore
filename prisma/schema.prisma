@@ -47,4 +47,6 @@ model User {
   updatedAt DateTime @updatedAt
   folders   Folder[]
   files     File[]
+  token String? @unique
+  tokenExpire DateTime?
 }

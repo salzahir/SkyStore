@@ -3,6 +3,7 @@ import * as fileDb from '../db/queries/file.js';
 import handleValidationErrors from '../utils/error.js';
 import resend from "../services/resend.js";
 import { devLog } from '../utils/devlog.js';
+import crypto from 'crypto';
 
 // This function checks if the user is authenticated
 // Middleware for routes that require authentication
@@ -77,7 +78,16 @@ async function handleRecoverPassword(req, res) {
     try {
         const user = await userDb.getUserByEmail(email);
         if (user) {
-            await resend(email);
+            const rawToken = crypto.randomBytes(32).toString('hex');
+            const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+            const tokenExpiry = new Date(Date.now() + 1000 * 60 * 60); 
+            await userDb.updateUserToken(email, hashedToken, tokenExpiry);
+            const baseUrl =
+            process.env.NODE_ENV === "production"
+              ? "https://skystore-szkk.onrender.com"
+              : "http://localhost:3000";
+            const resetLink = `${baseUrl}/reset-password/${rawToken}`;
+            await resend(email, resetLink);
             devLog("Recovery email sent to:", email);
             res.render("forgot"
                 , {
@@ -103,11 +113,47 @@ async function handleRecoverPassword(req, res) {
     }
 }
 
+async function handleResetPasword(req, res) {
+    const { token } = req.params;
+    const { password, passwordConfirmation } = req.body;
+
+    if (password !== passwordConfirmation) { 
+        return res.status(400).render('reset', {
+            csrfToken: req.csrfToken(),
+            errors: [{ msg: "Passwords do not match" }],
+            old: req.body,
+            message: null,
+            token,
+        });
+    }
+
+    if (!token) {
+        return res.status(400).send('Invalid reset link');
+    }
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await userDb.getUserByToken(hashedToken);
+
+    if (!user || user.tokenExpire < new Date()) {
+        return res.status(400).send('Invalid or expired token');
+    }
+
+    try {
+        await userDb.resetPassword(user.email, password);
+        devLog("Password reset for user:", user.email);
+        res.redirect('/login');
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        res.status(500).send('Error resetting password');
+    }
+}
+
 export {
     ensureAuth,
     handleLogin,
     handleLogout,
     handleRegister,
     handleDeleteFile,
-    handleRecoverPassword
+    handleRecoverPassword,
+    handleResetPasword
 }

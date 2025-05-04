@@ -68,11 +68,13 @@ async function getUserByEmail(email) {
 
 async function resetPassword(email, newPassword) {
     try {
-        hashedPwd = await hashPassword(newPassword);
+        const hashedPwd = await hashPassword(newPassword);
         const user = await prisma.user.update({
             where: { email },
             data: { password: hashedPwd }
         });
+        devLog("Password reset for user:", user);
+        await clearResetToken(email);
         return user;
     } catch (error) {
         console.error("Error resetting password:", error);
@@ -80,4 +82,40 @@ async function resetPassword(email, newPassword) {
     }
 }
 
-export { getLoginUser, postRegisterUser, getUserByEmail, resetPassword };
+async function clearResetToken(email) {
+    return prisma.user.update({
+        where: { email },
+        data: {
+            token: null,
+            tokenExpire: null
+        }
+    });
+}
+
+async function getUserByToken(hashedToken) {
+    try {
+      return await prisma.user.findUnique({where: { token: hashedToken }});
+    } catch (err) {
+      console.error("Error fetching user by token:", err);
+      throw new Error("Error fetching user by token");
+    }
+  }
+
+async function updateUserToken(email, token, tokenExpiration) {
+    try {
+        const user = await prisma.user.update({
+            where: { email },
+            data: {
+                token: token,
+                tokenExpire: tokenExpiration
+            }
+        });
+        devLog("User token updated:", user);
+        return user;
+    } catch (error) {
+        console.error("Error updating user token:", error);
+        throw new Error("Error updating user token");
+    }
+}
+
+export { getLoginUser, postRegisterUser, getUserByEmail, resetPassword, updateUserToken, getUserByToken, getUsers, deleteUsers };

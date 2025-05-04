@@ -4,6 +4,7 @@
 // This module handles rendering views for the application.
 
 import * as db from '../db/queries/file.js';
+import * as userDb from '../db/queries/user.js';
 
 // General Pages
 
@@ -82,6 +83,32 @@ function renderForgotPassword(req, res) {
         message: null
     });
 }
+import crypto from 'crypto';
+
+async function renderResetPassword(req, res) {
+    const { token } = req.params;
+
+    if (!token) {
+        return res.status(400).send('Invalid reset link');
+    }
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await userDb.getUserByToken(hashedToken);
+
+    if (!user || user.tokenExpire < new Date()) {
+        return res.status(400).send('Invalid or expired token');
+    }
+    const email = user.email;
+
+    return res.render('reset', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {},
+        message: null,
+        token,
+        email
+    });
+}
 
 export {
     renderRoot,
@@ -90,5 +117,6 @@ export {
     renderRegister,
     renderTerms,
     renderFile,
-    renderForgotPassword
+    renderForgotPassword,
+    renderResetPassword
 };

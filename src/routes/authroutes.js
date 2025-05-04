@@ -28,4 +28,7 @@ router.get("/dashboard", authController.ensureAuth, viewsController.renderDashbo
 router.get("/dashboard/file/:id", authController.ensureAuth, viewsController.renderFile);
 router.post("/dashboard/file/:id", authController.ensureAuth, authController.handleDeleteFile);
 
+router.get("/reset-password/:token", viewsController.renderResetPassword);
+router.post("/reset-password/:token", authController.handleResetPasword);
+
 export default router;
