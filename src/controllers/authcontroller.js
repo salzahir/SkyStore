@@ -73,21 +73,26 @@ async function handleDeleteFile(req, res) {
     }
 }
 
+
+async function sendRecoveryEmail(email){
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+    const tokenExpiry = new Date(Date.now() + 1000 * 60 * 60); 
+    await userDb.updateUserToken(email, hashedToken, tokenExpiry);
+    const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://skystore-szkk.onrender.com"
+      : "http://localhost:3000";
+      const resetLink = `${baseUrl}/reset-password/${rawToken}`;
+      await resend(email, resetLink);
+}
+
 async function handleRecoverPassword(req, res) {
     const { email } = req.body;
     try {
         const user = await userDb.getUserByEmail(email);
         if (user) {
-            const rawToken = crypto.randomBytes(32).toString('hex');
-            const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
-            const tokenExpiry = new Date(Date.now() + 1000 * 60 * 60); 
-            await userDb.updateUserToken(email, hashedToken, tokenExpiry);
-            const baseUrl =
-            process.env.NODE_ENV === "production"
-              ? "https://skystore-szkk.onrender.com"
-              : "http://localhost:3000";
-            const resetLink = `${baseUrl}/reset-password/${rawToken}`;
-            await resend(email, resetLink);
+            await sendRecoveryEmail(email);
             devLog("Recovery email sent to:", email);
             res.render("forgot"
                 , {
