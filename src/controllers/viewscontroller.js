@@ -51,7 +51,8 @@ async function renderDashboard(req, res) {
             files: files,
             errors: [],
             old: {},
-            message: req.query.message || null
+            message: req.query.message || null,
+            csrfToken: req.csrfToken()
         });
     } catch (err) {
         console.error("Error fetching files:", err);

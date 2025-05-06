@@ -59,6 +59,7 @@ async function postUpload(req, res) {
       files: files,
       errors: [],
       old: {},
+      csrfToken: req.csrfToken()
     });
 
   } catch (error) {
