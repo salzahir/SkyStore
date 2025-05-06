@@ -13,16 +13,29 @@
   }
   
   .upload-image {
-    max-width: 100px;  /* Set max width to control image size */
-    max-height: 100px; /* Set max height to control image size */
-    object-fit: contain; /* Ensures the image scales without distortion */
-    margin-right: 10px; /* Optional: space between the image and the text */
+    max-width: 100px;  
+    max-height: 100px; 
+    object-fit: contain; 
+    margin-right: 10px; 
   }
   
   .upload-image-label:hover {
     background-color: var(--primary);
   }
 
-  .upload-image-input {
-    display: none; /* Hide the default file input */
+  /* .upload-image-input {
+    display: none; 
   }
+
+  .upload-input-hidden {
+    display: none;
+  }
+
+  .upload-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  } */

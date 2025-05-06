@@ -8,16 +8,19 @@
   <div class="dashboard-container">
     <h2 class="welcome-text">Welcome, <%= user.username %>!</h2>
     <div class="dashboard-actions">
+      <form action="/dashboard/create-folder" method="POST">
+        <button class="btn" type="submit">
+          <i class="fas fa-folder-plus"></i> Create New Folder
+        </button>
+      </form>
       <button class="btn" id="showUploadBtn">
         <i class="fas fa-upload"></i> Upload New File
       </button>
-      <a href="/logout" class="logout-link">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </a>
     </div>
   </div>
+</div>
   
-  <div class="upload-section" id="uploadSection" style="display: none;">
+  <div class="upload-section" id="uploadSection" style="display: block;">
     <%- include('partials/upload') -%>
   </div>
   
