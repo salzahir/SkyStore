@@ -7,6 +7,13 @@
 <div class="container">
   <div class="dashboard-container">
     <h2 class="welcome-text">Welcome, <%= user.username %>!</h2>
+    <div class="breadcrumb">
+      <a href="/dashboard">Dashboard</a>
+      <% if (currentFolder) { %>
+        &nbsp;>&nbsp;
+        <span><%= currentFolder.name %></span>
+      <% } %>
+    </div>
     <div class="dashboard-actions">
       <form action="/dashboard/create-folder" method="POST">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -26,7 +33,7 @@
   </div>
   
   <div class="uploaded-files">
-    <h3>Your Files</h3>
+    <h3>Your Folders & Files</h3>
 
 
     <% if (message) { %>
@@ -35,13 +42,29 @@
       </div>
     <% } %>
     
-    <% if (files.length === 0) { %>
+    <% if (files.length === 0 && folders.length === 0) { %>
       <div class="empty-state">
         <i class="fas fa-folder-open fa-3x"></i>
-        <p>You haven't uploaded any files yet. Use the upload button to get started!</p>
+        <p>You haven't uploaded any files or folders yet. Use the upload button to get started!</p>
       </div>
     <% } else { %>
       <div class="files-grid">
+        <% folders.forEach(folder => { %>
+          <div class="folder-card">
+            <div class="folder-header">
+              <h4><%= folder.name %></h4>
+              <span class="folder-type"><%= folder.folderType %></span>
+            </div>
+            <div class="folder-body">
+              <div class="folder-actions">
+                <a href="/dashboard/folder/<%= encodeURIComponent(folder.id) %>" class="btn">
+                  <i class="fas fa-folder-open"></i> Open Folder
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+
         <% files.forEach(file => { %>
           <div class="file-card">
             <div class="file-header">

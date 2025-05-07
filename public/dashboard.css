@@ -64,6 +64,24 @@
     color: var(--accent);
   }
   
+  .breadcrumb {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb span {
+    color: var(--text-light);
+  }
+  
   /* Dashboard Container */
   .dashboard-container {
     background-color: var(--white);
@@ -120,6 +138,47 @@
     font-family: inherit;
     font-size: 1rem;
   }
+
+  /* Folder display  */
+  .folder-card {
+    background-color: var(--secondary);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.folder-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.folder-header {
+    background-color: var(--primary-light);
+    color: var(--white);
+    padding: 1rem;
+}
+
+.folder-header h4 {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folder-type {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.folder-body {
+    padding: 1rem;
+}
+
+.folder-actions {
+    display: flex;
+    justify-content: space-between;
+}
   
   /* File display */
   .uploaded-files {

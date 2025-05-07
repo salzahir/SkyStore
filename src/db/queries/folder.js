@@ -29,7 +29,25 @@ async function getUserFolders(userId) {
     }
 }   
 
+async function getFolderById(folderId) {
+    try {
+        const folder = await prisma.folder.findUnique({
+            where: {
+                id: folderId
+            }
+        });
+        if (!folder) {
+            console.log(`Folder with ID: ${folderId} not found`);
+            return null;
+        }
+        return folder;
+    } catch (error) {
+        console.error("Error fetching folder:", error);
+    }
+}
+
 export {
     createFolder,
-    getUserFolders
+    getUserFolders,
+    getFolderById
 }

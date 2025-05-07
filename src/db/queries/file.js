@@ -84,6 +84,21 @@ async function deleteFile(fileId) {
     }
 }
 
+async function getFilesByFolderId(folderId) {
+    try {
+        console.log(`Fetching files for folder ID: ${folderId}`);
+        const files = await prisma.file.findMany({
+            where: {
+                folderId: folderId
+            }
+        });
+        console.log(`${files.length} files found for folder ID: ${folderId}`);
+        return files;
+    } catch (error) {
+        console.error("Error fetching files by folder ID:", error);
+    }
+}
+
 export {
     insertFile,
     getFiles,
@@ -91,4 +106,5 @@ export {
     deleteAllFiles,
     deleteFile,
     getFileById,
+    getFilesByFolderId
 }
