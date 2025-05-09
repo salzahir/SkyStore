@@ -6,8 +6,7 @@ import * as folderDb from '../db/queries/folder.js';
 
 async function postUpload(req, res) {
   const file = req.file;
-  const folderId = req.params.folderId || null;
-  const currentFolder = folderId ? await folderDb.getFolderById(folderId) : null;
+  const folderId = req.body.folderId || null;
 
   // Validation
   if (!file || !file.buffer) {

@@ -7,6 +7,9 @@
         <span class="upload-label-text">Click to choose a file</span>
       </label>
       <input type="file" name="file" id="file" required class="upload-input-hidden">
+      <% if (currentFolder) { %>
+        <input type="hidden" name="folderId" value="<%= currentFolder.id %>">
+      <% } %>
       <button type="submit" class="upload-button">Upload</button>
     </form>
   </div>
