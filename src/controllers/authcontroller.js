@@ -18,7 +18,7 @@ function ensureAuth(req, res, next) {
 // It checks the username and password against the database
 async function handleLogin(req, res) {
     const { username, password } = req.body;
-    const user = await userDb.getLoginUser(username, password); 
+    const user = await userDb.getLoginUser(username, password);
 
     if (user) {
         req.session.user = user;
@@ -74,17 +74,17 @@ async function handleDeleteFile(req, res) {
 }
 
 
-async function sendRecoveryEmail(email){
+async function sendRecoveryEmail(email) {
     const rawToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
-    const tokenExpiry = new Date(Date.now() + 1000 * 60 * 60); 
+    const tokenExpiry = new Date(Date.now() + 1000 * 60 * 60);
     await userDb.updateUserToken(email, hashedToken, tokenExpiry);
     const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? "https://skystore-szkk.onrender.com"
-      : "http://localhost:3000";
-      const resetLink = `${baseUrl}/reset-password/${rawToken}`;
-      await resend(email, resetLink);
+        process.env.NODE_ENV === "production"
+            ? "https://skystore-szkk.onrender.com"
+            : "http://localhost:3000";
+    const resetLink = `${baseUrl}/reset-password/${rawToken}`;
+    await resend(email, resetLink);
 }
 
 async function handleRecoverPassword(req, res) {
@@ -94,14 +94,7 @@ async function handleRecoverPassword(req, res) {
         if (user) {
             await sendRecoveryEmail(email);
             devLog("Recovery email sent to:", email);
-            res.render("forgot"
-                , {
-                    csrfToken: req.csrfToken(),
-                    errors: [],
-                    old: {},
-                    message: "Recovery email sent. Please check your inbox."
-                }
-            )
+            res.redirect('/forgot-password?message=Recovery email sent. Please check your inbox.');
         } else {
             devLog("Email not found:", email);
             res.status(404).render(
@@ -113,7 +106,7 @@ async function handleRecoverPassword(req, res) {
             });
         }
     } catch (error) {
-        console.error("Error recovering password:", error,message);
+        console.error("Error recovering password:", error);
         res.status(500).send('Error recovering password');
     }
 }
@@ -122,7 +115,7 @@ async function handleResetPasword(req, res) {
     const { token } = req.params;
     const { password, passwordConfirmation } = req.body;
 
-    if (password !== passwordConfirmation) { 
+    if (password !== passwordConfirmation) {
         return res.status(400).render('reset', {
             csrfToken: req.csrfToken(),
             errors: [{ msg: "Passwords do not match" }],
