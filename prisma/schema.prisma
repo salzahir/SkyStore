@@ -35,6 +35,9 @@ model Folder {
   files     File[]
   userId    String   // Changed to String (UUID)
   user      User     @relation(fields: [userId], references: [id])
+  parentId         String?   
+  parentFolder     Folder?    @relation("FolderParent", fields: [parentId], references: [id])
+  childrenFolders  Folder[]   @relation("FolderParent")
 }
 
 model User {

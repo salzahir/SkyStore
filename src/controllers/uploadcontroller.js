@@ -2,16 +2,12 @@ import supabase from '../db/supabase.js';
 import { insertFile } from '../db/queries/file.js';
 import { getUserFiles } from '../db/queries/file.js'
 import { devLog } from '../utils/devlog.js';
-
-// Controller functions
-function renderUpload(req, res) {
-  res.render('upload', {
-    csrfToken: req.csrfToken()
-  });
-}
+import * as folderDb from '../db/queries/folder.js';
 
 async function postUpload(req, res) {
   const file = req.file;
+  const folderId = req.params.folderId || null;
+  const currentFolder = folderId ? await folderDb.getFolderById(folderId) : null;
 
   // Validation
   if (!file || !file.buffer) {
@@ -38,29 +34,23 @@ async function postUpload(req, res) {
       .from('files')
       .getPublicUrl(`public/${newFileName}`);
 
-
-
     const userId = req.session.user.id;
     await insertFile({
       name: file.originalname,
       fileType: file.mimetype,
       url: publicUrl,
-      folderId: null,
+      folderId: folderId,
       userID: userId
     });
 
     devLog('File uploaded successfully:', publicUrl);
 
-    const files = await getUserFiles(userId);
-
-    res.render('dashboard', {
-      user: req.session.user,
-      message: 'File uploaded successfully',
-      files: files,
-      errors: [],
-      old: {},
-      csrfToken: req.csrfToken()
-    });
+    // Redirect back to the appropriate location
+    if (folderId) {
+      res.redirect(`/dashboard/folder/${folderId}?message=File uploaded successfully`);
+    } else {
+      res.redirect('/dashboard?message=File uploaded successfully');
+    }
 
   } catch (error) {
     console.error('FINAL UPLOAD ERROR:', error);
@@ -68,4 +58,4 @@ async function postUpload(req, res) {
   }
 }
 
-export { postUpload, renderUpload };
+export { postUpload };

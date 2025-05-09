@@ -1,12 +1,13 @@
 import { devLog } from "../../utils/devlog.js";
 import prisma from "./prisma.js";
 
-async function createFolder(name, userId, userName, user) {
+async function createFolder(name, userId, parentId = null) {
     try {
         const folder = await prisma.folder.create({
             data: {
               name,
-              userId,         
+              userId,
+              parentId         
             }
           });
         devLog("Folder created:", folder);
