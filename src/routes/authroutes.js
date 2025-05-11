@@ -4,8 +4,8 @@ import { Router } from "express";
 import * as authController from "../controllers/authcontroller.js"
 import * as viewsController from "../controllers/viewscontroller.js"
 import * as folderController from "../controllers/foldercontroller.js"
+import * as passwordController from "../controllers/passwordcontroller.js"
 import validForm from "../utils/validation.js"
-
 const router = Router()
 
 // Root & General
@@ -13,7 +13,7 @@ router.get("/", viewsController.renderRoot);
 router.get("/terms", viewsController.renderTerms);
 
 router.get("/forgot-password", viewsController.renderForgotPassword);
-router.post("/forgot-password", authController.handleRecoverPassword);
+router.post("/forgot-password", passwordController.handleRecoverPassword);
 
 // Auth Pages
 router.get("/login", viewsController.renderLogin);
@@ -33,6 +33,6 @@ router.post("/dashboard/create-folder", authController.ensureAuth, folderControl
 router.get("/dashboard/folder/:id", authController.ensureAuth, viewsController.renderFolderDashboard);
 
 router.get("/reset-password/:token", viewsController.renderResetPassword);
-router.post("/reset-password/:token", authController.handleResetPasword);
+router.post("/reset-password/:token", passwordController.handleResetPasword);
 
 export default router;
