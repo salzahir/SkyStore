@@ -88,6 +88,7 @@ function renderForgotPassword(req, res) {
         message: null
     });
 }
+
 import crypto from 'crypto';
 
 async function renderResetPassword(req, res) {
@@ -120,7 +121,7 @@ async function renderFolderDashboard(req, res) {
     const user = req.session.user;
 
     try {
-        const folders = await folderDb.getUserFolders(user.id);
+        const folders = await folderDb.getChildrenFolders(folderID);
         const files = await fileDb.getFilesByFolderId(folderID);
         const currentFolder = await folderDb.getFolderById(folderID);
 

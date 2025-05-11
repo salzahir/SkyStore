@@ -38,6 +38,7 @@ model Folder {
   parentId         String?   
   parentFolder     Folder?    @relation("FolderParent", fields: [parentId], references: [id])
   childrenFolders  Folder[]   @relation("FolderParent")
+  sharedWith      User[]     @relation("SharedFolders")
 }
 
 model User {
@@ -52,4 +53,5 @@ model User {
   files     File[]
   token String? @unique
   tokenExpire DateTime?
+  sharedFolders Folder[] @relation("SharedFolders")
 }

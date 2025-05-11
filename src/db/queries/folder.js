@@ -47,8 +47,22 @@ async function getFolderById(folderId) {
     }
 }
 
+async function getChildrenFolders(folderId) {
+    try {
+        const folders = await prisma.folder.findMany({
+            where: {
+                parentId: folderId
+            }
+        });
+        return folders;
+    } catch (error) {
+        console.error("Error fetching children folders:", error);
+    }
+}
+
 export {
     createFolder,
     getUserFolders,
-    getFolderById
+    getFolderById,
+    getChildrenFolders
 }
