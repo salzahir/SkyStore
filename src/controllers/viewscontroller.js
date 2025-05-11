@@ -3,7 +3,9 @@
 // View controller for rendering views
 // This module handles rendering views for the application.
 
-import * as db from '../db/queries/file.js';
+import * as fileDb from '../db/queries/file.js';
+import * as userDb from '../db/queries/user.js';
+import * as folderDb from '../db/queries/folder.js';
 
 // General Pages
 
@@ -44,13 +46,17 @@ function renderRegister(req, res) {
 async function renderDashboard(req, res) {
     try {
         const user = req.session.user;
-        const files = await db.getUserFiles(user.id);
+        const files = await fileDb.getUserFiles(user.id);
+        const folders = await folderDb.getUserFolders(user.id);
         return res.render('dashboard', {
             user: user,
             files: files,
+            folders: folders,
             errors: [],
             old: {},
-            message: req.query.message || null
+            message: req.query.message || null,
+            csrfToken: req.csrfToken(),
+            currentFolder: null
         });
     } catch (err) {
         console.error("Error fetching files:", err);
@@ -60,7 +66,7 @@ async function renderDashboard(req, res) {
 
 async function renderFile(req, res) {
     const fileID = req.params.id;
-    const file = await db.getFileById(fileID);
+    const file = await fileDb.getFileById(fileID);
 
     if (!file) {
         return res.status(404).send('File not found');
@@ -83,6 +89,59 @@ function renderForgotPassword(req, res) {
     });
 }
 
+import crypto from 'crypto';
+
+async function renderResetPassword(req, res) {
+    const { token } = req.params;
+
+    if (!token) {
+        return res.status(400).send('Invalid reset link');
+    }
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await userDb.getUserByToken(hashedToken);
+
+    if (!user || user.tokenExpire < new Date()) {
+        return res.status(400).send('Invalid or expired token');
+    }
+    const email = user.email;
+
+    return res.render('reset', {
+        csrfToken: req.csrfToken(),
+        errors: [],
+        old: {},
+        message: null,
+        token,
+        email
+    });
+}
+
+async function renderFolderDashboard(req, res) {
+    const folderID = req.params.id;
+    const user = req.session.user;
+
+    try {
+        const folders = await folderDb.getChildrenFolders(folderID);
+        const files = await fileDb.getFilesByFolderId(folderID);
+        const currentFolder = await folderDb.getFolderById(folderID);
+
+        return res.render("dashboard", {
+            user: user,
+            folders: folders,
+            files: files,
+            errors: [],
+            old: {},
+            message: req.query.message || null,
+            csrfToken: req.csrfToken(),
+            currentFolder: currentFolder
+        });
+    }
+    catch (err) {
+        console.error("Error fetching files:", err);
+        return res.status(500).send('Failed to load dashboard');
+    }
+}
+
 export {
     renderRoot,
     renderLogin,
@@ -90,5 +149,7 @@ export {
     renderRegister,
     renderTerms,
     renderFile,
-    renderForgotPassword
+    renderForgotPassword,
+    renderResetPassword,
+    renderFolderDashboard
 };

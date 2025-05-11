@@ -3,6 +3,7 @@
 import { Router } from "express";
 import * as authController from "../controllers/authcontroller.js"
 import * as viewsController from "../controllers/viewscontroller.js"
+import * as folderController from "../controllers/foldercontroller.js"
 import validForm from "../utils/validation.js"
 
 const router = Router()
@@ -27,5 +28,11 @@ router.get("/dashboard", authController.ensureAuth, viewsController.renderDashbo
 
 router.get("/dashboard/file/:id", authController.ensureAuth, viewsController.renderFile);
 router.post("/dashboard/file/:id", authController.ensureAuth, authController.handleDeleteFile);
+
+router.post("/dashboard/create-folder", authController.ensureAuth, folderController.handleCreateFolder);
+router.get("/dashboard/folder/:id", authController.ensureAuth, viewsController.renderFolderDashboard);
+
+router.get("/reset-password/:token", viewsController.renderResetPassword);
+router.post("/reset-password/:token", authController.handleResetPasword);
 
 export default router;

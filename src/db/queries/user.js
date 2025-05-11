@@ -1,18 +1,23 @@
 import prisma from './prisma.js';
 import { hashPassword, comparePassword } from '../../utils/hash.js';
+import { devLog } from '../../utils/devlog.js';
 
 async function getLoginUser(username, password) {
-    const user = await prisma.user.findUnique({
-        where: {
-            username: username,
-        }
-    });
+    const user = await prisma.user.findUnique({ where: { username } });
 
-    if (user && await comparePassword(password, user.password)) {
-        return user;
-    } else {
+    if (!user) {
+        devLog("User not found, username:", username);
         return null;
     }
+
+    const isMatch = await comparePassword(password, user.password);
+    if (!isMatch) {
+        devLog("Password does not match for user:", username);
+        return null;
+    }
+    
+    devLog("User found:", user);
+    return user;
 }
 
 async function postRegisterUser(username, name, email, password) {
@@ -30,12 +35,9 @@ async function postRegisterUser(username, name, email, password) {
 
 async function getUsers() {
     try {
-        console.log("Fetching all users...");
+        devLog("Fetching all users...");
         const users = await prisma.user.findMany();
-        users.forEach(user => {
-            console.log(`User ID: ${user.id}, Username: ${user.username}, Name: ${user.name}, Email: ${user.email}`);
-        });
-        console.log(`${users.length} users found`);
+        devLog(`${users.length} users found`);
         return users;
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -44,13 +46,10 @@ async function getUsers() {
 
 async function deleteUsers() {
     try {
-        console.log("Deleting all files...");
+        devLog("Deleting all files...");
         await prisma.file.deleteMany();
-
-        console.log("Deleting all users...");
         const result = await prisma.user.deleteMany();
-
-        console.log(`${result.count} users deleted`);
+        devLog(`${result.count} users deleted`);
         return result;
     } catch (error) {
         console.error("Error deleting users:", error);
@@ -59,11 +58,7 @@ async function deleteUsers() {
 
 async function getUserByEmail(email) {
     try {
-        const user = await prisma.user.findUnique({
-            where: {
-                email: email,
-            }
-        });
+        const user = await prisma.user.findUnique({ where: { email } });
         return user;
     } catch (error) {
         console.error("Error fetching user by email:", error);
@@ -71,4 +66,56 @@ async function getUserByEmail(email) {
     }
 }
 
-export { getLoginUser, postRegisterUser, getUserByEmail };
+async function resetPassword(email, newPassword) {
+    try {
+        const hashedPwd = await hashPassword(newPassword);
+        const user = await prisma.user.update({
+            where: { email },
+            data: { password: hashedPwd }
+        });
+        devLog("Password reset for user:", user);
+        await clearResetToken(email);
+        return user;
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        throw new Error("Error resetting password");
+    }
+}
+
+async function clearResetToken(email) {
+    return prisma.user.update({
+        where: { email },
+        data: {
+            token: null,
+            tokenExpire: null
+        }
+    });
+}
+
+async function getUserByToken(hashedToken) {
+    try {
+      return await prisma.user.findUnique({where: { token: hashedToken }});
+    } catch (err) {
+      console.error("Error fetching user by token:", err);
+      throw new Error("Error fetching user by token");
+    }
+  }
+
+async function updateUserToken(email, token, tokenExpiration) {
+    try {
+        const user = await prisma.user.update({
+            where: { email },
+            data: {
+                token: token,
+                tokenExpire: tokenExpiration
+            }
+        });
+        devLog("User token updated:", user);
+        return user;
+    } catch (error) {
+        console.error("Error updating user token:", error);
+        throw new Error("Error updating user token");
+    }
+}
+
+export { getLoginUser, postRegisterUser, getUserByEmail, resetPassword, updateUserToken, getUserByToken, getUsers, deleteUsers };

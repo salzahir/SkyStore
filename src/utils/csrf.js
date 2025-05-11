@@ -8,4 +8,4 @@ const csrfMiddleware = (req, res, next) => {
   csrfProtection(req, res, next);
 };
 
-export default csrfMiddleware
+export default csrfMiddleware;
