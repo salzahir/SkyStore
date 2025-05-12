@@ -11,5 +11,6 @@ router.use(authController.ensureAuth);
 // Folder operations
 router.post("/dashboard/create-folder", folderController.handleCreateFolder);
 router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
+router.post("/dashboard/delete-folder", folderController.handleDeleteFolder);
 
 export default router;

@@ -60,9 +60,23 @@ async function getChildrenFolders(folderId) {
     }
 }
 
+async function deleteFolder(folderId) {
+    try {
+        const folder = await prisma.folder.delete({
+            where: {
+                id: folderId
+            }
+        });
+        return folder;
+    } catch (error) {
+        console.error("Error deleting folder:", error);
+    }
+}
+
 export {
     createFolder,
     getUserFolders,
     getFolderById,
-    getChildrenFolders
+    getChildrenFolders,
+    deleteFolder
 }
