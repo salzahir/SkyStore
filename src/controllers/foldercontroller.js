@@ -26,4 +26,17 @@ async function handleDeleteFolder(req, res) {
     }
 }
 
-export { handleCreateFolder, handleDeleteFolder };
+async function handleFolderRename(req, res) {
+    const folderId = req.body.folderId;
+    const newName = req.body.newName;
+
+    try {
+        const folder = await folderDB.renameFolder(folderId, newName);
+        res.status(200).json({ message: "Folder renamed successfully", folder });
+    } catch (error) {
+        console.error("Error renaming folder:", error);
+        res.status(500).json({ message: "Error renaming folder" });
+    }
+}
+
+export { handleCreateFolder, handleDeleteFolder, handleFolderRename };

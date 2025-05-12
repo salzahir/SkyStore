@@ -73,10 +73,28 @@ async function deleteFolder(folderId) {
     }
 }
 
+
+async function renameFolder(folderId, newName) {
+    try {
+        const folder = await prisma.folder.update({
+            where: {
+                id: folderId
+            },
+            data: {
+                name: newName
+            }
+        });
+        return folder;
+    } catch (error) {
+        console.error("Error renaming folder:", error);
+    }
+}
+
 export {
     createFolder,
     getUserFolders,
     getFolderById,
     getChildrenFolders,
-    deleteFolder
+    deleteFolder,
+    renameFolder
 }
