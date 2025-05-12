@@ -13,5 +13,6 @@ router.post("/dashboard/create-folder", folderController.handleCreateFolder);
 router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
 router.post("/dashboard/delete-folder", folderController.handleDeleteFolder);
 router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
+router.post("/dashboard/rename-folder", folderController.handleFolderRename);
 
 export default router;

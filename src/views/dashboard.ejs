@@ -65,6 +65,14 @@
                     <i class="fas fa-trash"></i> Delete
                   </button>
                 </form>
+                <form action="/dashboard/rename-folder" method="POST" class="rename-form">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="folderId" value="<%= folder.id %>">
+                  <input type="text" name="newFolderName" placeholder="New Folder Name" required>
+                  <button type="submit" class="btn rename-btn">
+                    <i class="fas fa-edit"></i> Rename
+                  </button>
+                </form>
               </div>
             </div>
           </div>
