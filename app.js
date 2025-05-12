@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import csrfMiddleware from './src/utils/csrf.js';
 import authRoutes from './src/routes/authroutes.js';
 import uploadRoutes from './src/routes/uploadroutes.js';
+import fileRoutes from './src/routes/fileroutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,5 +49,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", authRoutes);
 app.use("/", uploadRoutes);
+app.use('/', fileRoutes);
 
 export { app, PORT }
