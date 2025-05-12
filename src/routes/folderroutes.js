@@ -9,7 +9,7 @@ const router = Router();
 router.use(authController.ensureAuth);
 
 // Folder operations
-router.post("/create-folder", folderController.handleCreateFolder);
-router.get("/folder/:id", viewsController.renderFolderDashboard);
+router.post("/dashboard/create-folder", folderController.handleCreateFolder);
+router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
 
 export default router;
