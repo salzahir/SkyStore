@@ -27,4 +27,25 @@ async function sendEmail(recipient, resetLink) {
   }
 }
 
-export default sendEmail;
+async function sendSharedFolderEmail(recipient, folderId) {
+  try {
+    await resend.emails.send({
+      from: 'SkyStore <no_reply_sky_store@resend.dev>',
+      subject: 'Folder Shared with You',
+      to: recipient,
+      html: `
+        <p>Hello,</p>
+        <p>A folder has been shared with you. Click the link below to view it:</p>
+        <a href="${process.env.FRONTEND_URL}/dashboard/folder/${folderId}">View Folder</a>
+        <p>— SkyStore Team</p>
+        <p><small>This is an automated message. Please do not reply.</small></p>
+        `
+    });
+  } catch (error) {
+    console.error("Error sending shared folder email:", error);
+    throw new Error("Failed to send shared folder email");
+  }
+}
+
+
+export { sendEmail, sendSharedFolderEmail };

@@ -5,11 +5,11 @@ async function createFolder(name, userId, parentId = null) {
     try {
         const folder = await prisma.folder.create({
             data: {
-              name,
-              userId,
-              parentId         
+                name,
+                userId,
+                parentId
             }
-          });
+        });
         devLog("Folder created:", folder);
         return folder;
     } catch (error) {
@@ -28,7 +28,7 @@ async function getUserFolders(userId) {
     } catch (error) {
         console.error("Error fetching user folders:", error);
     }
-}   
+}
 
 async function getFolderById(folderId) {
     try {
@@ -90,11 +90,48 @@ async function renameFolder(folderId, newName) {
     }
 }
 
+async function shareFolder(folderId, userId) {
+    try {
+        const folder = await prisma.folder.update({
+            where: {
+                id: folderId
+            },
+            data: {
+                sharedWith: {
+                    connect: { id: userId }
+                }
+            }
+        });
+        return folder;
+    } catch (error) {
+        console.error("Error sharing folder:", error);
+    }
+}
+
+async function getSharedFolders(userId) {
+    try {
+        const folders = await prisma.folder.findMany({
+            where: {
+                sharedWith: {
+                    some: {
+                        id: userId
+                    }
+                }
+            }
+        });
+        return folders;
+    } catch (error) {
+        console.error("Error fetching shared folders:", error);
+    }
+}
+
 export {
     createFolder,
     getUserFolders,
     getFolderById,
     getChildrenFolders,
     deleteFolder,
-    renameFolder
+    renameFolder,
+    shareFolder,
+    getSharedFolders
 }

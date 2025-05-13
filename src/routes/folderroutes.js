@@ -14,5 +14,6 @@ router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
 router.post("/dashboard/delete-folder", folderController.handleDeleteFolder);
 router.get("/dashboard/folder/:id", viewsController.renderFolderDashboard);
 router.post("/dashboard/rename-folder", folderController.handleFolderRename);
+router.post("/dashboard/share-folder", folderController.handleShareFolder);
 
 export default router;

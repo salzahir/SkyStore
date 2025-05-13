@@ -1,4 +1,4 @@
-import resend from "../services/resend.js";
+import {sendEmail} from "../services/resend.js";
 import crypto from 'crypto';
 import * as userDb from '../db/queries/user.js';
 import { devLog } from '../utils/devlog.js';
@@ -13,7 +13,7 @@ async function sendRecoveryEmail(email) {
             ? "https://skystore-szkk.onrender.com"
             : "http://localhost:3000";
     const resetLink = `${baseUrl}/reset-password/${rawToken}`;
-    await resend(email, resetLink);
+    await sendEmail(email, resetLink);
 }
 
 async function handleRecoverPassword(req, res) {
