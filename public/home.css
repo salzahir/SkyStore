@@ -25,6 +25,25 @@
     padding: 4rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    gap: 2rem;
+  }
+  
+  .intro {
+    flex: 1;
+  }
+  
+  .hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
   }
   
   .intro h1 {
@@ -134,4 +153,20 @@
   
   footer a:hover {
     text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-section {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .hero-image img {
+      max-height: 300px;
+    }
+    
+    .cta-buttons {
+      justify-content: center;
+    }
   }

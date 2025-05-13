@@ -7,8 +7,9 @@ if (!process.env.RESEND_API_KEY) {
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendEmail(recipient, resetLink) {
+  console.log("Attempting to send email to:", recipient);
   try {
-    await resend.emails.send({
+    const data = await resend.emails.send({
       from: 'SkyStore <no_reply_sky_store@resend.dev>',
       to: recipient,
       subject: 'Password Recovery',
@@ -21,15 +22,17 @@ async function sendEmail(recipient, resetLink) {
         <p><small>This is an automated message. Please do not reply.</small></p>
         `
     });
+    console.log("Email sent successfully to:", recipient, "Response:", data);
   } catch (error) {
-    console.error("Error sending password reset email:", error);
+    console.error("Error sending password reset email to", recipient, ":", error);
     throw new Error("Failed to send reset email");
   }
 }
 
 async function sendSharedFolderEmail(recipient, folderId) {
+  console.log("Attempting to send shared folder email to:", recipient);
   try {
-    await resend.emails.send({
+    const data = await resend.emails.send({
       from: 'SkyStore <no_reply_sky_store@resend.dev>',
       subject: 'Folder Shared with You',
       to: recipient,
@@ -41,11 +44,11 @@ async function sendSharedFolderEmail(recipient, folderId) {
         <p><small>This is an automated message. Please do not reply.</small></p>
         `
     });
+    console.log("Shared folder email sent successfully to:", recipient, "Response:", data);
   } catch (error) {
-    console.error("Error sending shared folder email:", error);
+    console.error("Error sending shared folder email to", recipient, ":", error);
     throw new Error("Failed to send shared folder email");
   }
 }
-
 
 export { sendEmail, sendSharedFolderEmail };
