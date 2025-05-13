@@ -4,6 +4,8 @@ import { Router } from "express";
 import * as authController from "../controllers/authcontroller.js"
 import * as viewsController from "../controllers/viewscontroller.js"
 import * as folderController from "../controllers/foldercontroller.js"
+import * as passwordController from "../controllers/passwordcontroller.js"
+import * as fileController from "../controllers/filecontroller.js"
 import validForm from "../utils/validation.js"
 
 const router = Router()
@@ -12,8 +14,11 @@ const router = Router()
 router.get("/", viewsController.renderRoot);
 router.get("/terms", viewsController.renderTerms);
 
+// Password management routes
 router.get("/forgot-password", viewsController.renderForgotPassword);
-router.post("/forgot-password", authController.handleRecoverPassword);
+router.post("/forgot-password", passwordController.handleRecoverPassword);
+router.get("/reset-password/:token", viewsController.renderResetPassword);
+router.post("/reset-password/:token", passwordController.handleResetPasword);
 
 // Auth Pages
 router.get("/login", viewsController.renderLogin);
@@ -27,12 +32,6 @@ router.post("/register", validForm, authController.handleRegister);
 router.get("/dashboard", authController.ensureAuth, viewsController.renderDashboard);
 
 router.get("/dashboard/file/:id", authController.ensureAuth, viewsController.renderFile);
-router.post("/dashboard/file/:id", authController.ensureAuth, authController.handleDeleteFile);
-
-router.post("/dashboard/create-folder", authController.ensureAuth, folderController.handleCreateFolder);
-router.get("/dashboard/folder/:id", authController.ensureAuth, viewsController.renderFolderDashboard);
-
-router.get("/reset-password/:token", viewsController.renderResetPassword);
-router.post("/reset-password/:token", authController.handleResetPasword);
+router.post("/dashboard/file/:id", authController.ensureAuth, fileController.handleDeleteFile);
 
 export default router;

@@ -48,6 +48,7 @@ async function renderDashboard(req, res) {
         const user = req.session.user;
         const files = await fileDb.getUserFiles(user.id);
         const folders = await folderDb.getUserFolders(user.id);
+        const sharedFolders = await folderDb.getSharedFolders(user.id);
         return res.render('dashboard', {
             user: user,
             files: files,
@@ -56,7 +57,8 @@ async function renderDashboard(req, res) {
             old: {},
             message: req.query.message || null,
             csrfToken: req.csrfToken(),
-            currentFolder: null
+            currentFolder: null,
+            sharedFolders: sharedFolders
         });
     } catch (err) {
         console.error("Error fetching files:", err);
@@ -124,6 +126,7 @@ async function renderFolderDashboard(req, res) {
         const folders = await folderDb.getChildrenFolders(folderID);
         const files = await fileDb.getFilesByFolderId(folderID);
         const currentFolder = await folderDb.getFolderById(folderID);
+        const sharedFolders = await folderDb.getSharedFolders(user.id);
 
         return res.render("dashboard", {
             user: user,
@@ -133,7 +136,8 @@ async function renderFolderDashboard(req, res) {
             old: {},
             message: req.query.message || null,
             csrfToken: req.csrfToken(),
-            currentFolder: currentFolder
+            currentFolder: currentFolder,
+            sharedFolders: sharedFolders
         });
     }
     catch (err) {
